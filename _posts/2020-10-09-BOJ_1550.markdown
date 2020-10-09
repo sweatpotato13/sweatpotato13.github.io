@@ -1,0 +1,48 @@
+---
+layout: post
+title: [C++] 백준 1550번 16진수
+date: "2020-10-09 23:03:44 +0900"
+tags: [boj, algorithm]
+---
+
+# 백준 1550번 16진수
+### 문제
+
+![BOJ1550](https://i.imgur.com/YH0eyQm.png)
+  
+  
+### 풀이
+
+단순한 출력형식 변경으로 해결 가능한 문제
+
+  
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://www.acmicpc.net/problem/1550
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n;
+    cin >> uppercase >> hex >> n;
+    cout << n; 
+
+    return 0;
+}
+```
