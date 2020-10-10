@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [C++] 백준 1550번 16진수
+title: "[C++] 백준 1550번 16진수"
 date: "2020-10-09 23:03:44 +0900"
 tags: [boj, algorithm]
 ---
@@ -8,8 +8,9 @@ tags: [boj, algorithm]
 # 백준 1550번 16진수
 ### 문제
 
+https://www.acmicpc.net/problem/1550
 ![BOJ1550](https://i.imgur.com/YH0eyQm.png)
-  
+
   
 ### 풀이
 

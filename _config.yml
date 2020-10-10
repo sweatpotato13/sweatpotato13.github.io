@@ -10,14 +10,14 @@ highlighter: rouge
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : Soot Spirits
-tagline: Code, Science, Philosophy, Humor
+title : "[Cute_Wisp]"
+tagline: Code, algorithm
 author :
-  name : Abhishek Nagekar
-  email : abhishek@nagekar.com
-  github : abhn
-  twitter : abhisheknagekar
-  feedburner : AbhishekN
+  name : Cute_Wisp Playground
+  email : sweatpotato13@gmail.com
+  github : https://github.com/sweatpotato13
+  twitter : none
+  feedburner : none
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt
@@ -27,7 +27,7 @@ author :
 # Else if you are pushing to username.github.io, replace with your username.
 # Finally if you are pushing to a GitHub project page, include the project name at the end.
 #
-production_url : https://www.nagekar.com
+production_url : "https://sweatpotato13.github.io/"
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
