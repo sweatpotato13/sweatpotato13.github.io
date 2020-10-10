@@ -41,7 +41,7 @@ typedef tuple<ll,ll,ll> tl3;
 #define tc(t) while (t--)
 // https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_b
 ll h,w;
-ll dir[4][2] ={{0,1},{0,-1},{1,0},{-1,0}};
+ll dir[4][2] = {%{0,1},{0,-1},{1,0},{-1,0}%};
 bool isAvailable(ll x, ll y){
     if(x >= 0 && y >= 0 && x < h && y < w) return true;
     else return false;
