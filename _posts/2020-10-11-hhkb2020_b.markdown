@@ -1,0 +1,75 @@
+---
+layout: post
+title: "[C++] HHKB Programming Contest 2020 B번"
+date: "2020-10-11 01:00:00 +0900"
+tags: [atcoder, algorithm]
+---
+
+# HHKB Programming Contest 2020 B번 Futon
+### 문제
+
+https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_b
+![HHKB2020B](https://i.imgur.com/g5Mfl9I.png)
+  
+  
+### 풀이
+
+매트리스를 총 몇가지 방법으로 설치할 수 있는지 묻는 문제
+
+모든 점에 대하여 연속으로 2칸이 존재하는 경우가 총 몇 가지 인지 카운트 한뒤
+
+마지막에 중복을 제거하기 위해 반으로 나누었다.
+
+  
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_b
+ll h,w;
+ll dir[4][2] ={{0,1},{0,-1},{1,0},{-1,0}};
+bool isAvailable(ll x, ll y){
+    if(x >= 0 && y >= 0 && x < h && y < w) return true;
+    else return false;
+}
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> h >> w;
+    vector<string> v(h);
+    rep(i,h){
+        cin >> v[i];
+    }
+    ll ans = 0;
+    rep(i,h){
+        rep(j,w){
+            if(v[i][j] == '.'){
+                rep(k,4){
+                    ll x = i+dir[k][0];
+                    ll y = j+dir[k][1];
+                    if(isAvailable(x,y) && v[x][y] == '.') ans++;
+                }
+            }
+        }  
+    }
+
+    cout << ans/2;
+
+    return 0;
+}
+```

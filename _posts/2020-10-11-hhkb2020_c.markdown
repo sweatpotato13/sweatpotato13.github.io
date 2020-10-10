@@ -1,0 +1,65 @@
+---
+layout: post
+title: "[C++] HHKB Programming Contest 2020 C번"
+date: "2020-10-11 01:00:00 +0900"
+tags: [atcoder, algorithm]
+---
+
+# HHKB Programming Contest 2020 C번 Neq Min
+### 문제
+
+https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_c
+![HHKB2020C](https://i.imgur.com/1Wi003u.png)
+  
+  
+### 풀이
+
+수열이 주어졌을 때 매 순서마다 지금까지 수열에 나오지 않았던 수 중 가장 작은 음이 아닌 정수를 출력하는 문제
+
+map을 이용하여 출현 여부를 체크하였고 
+
+특정 변수를 이용하여 가장 작은 수를 추적하는 방법으로 구현하였다.
+
+  
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_c
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n;
+    cin >> n;
+    vll v(n);
+    map<ll,ll> isUsed;
+    ll min = 0;
+    rep(i,n){
+        cin >> v[i];
+        isUsed[v[i]]++;
+        for(;;min++){
+            if(isUsed[min] == 0){
+                break;
+            }
+        }
+        cout << min << "\n";
+    }
+
+    return 0;
+}
+```
