@@ -1,0 +1,50 @@
+---
+layout: post
+title: "[C++] 백준 16480번 외심과 내심은 사랑입니다"
+date: "2020-10-14 08:12:44 +0900"
+tags: [boj, algorithm]
+---
+
+# 백준 1550번 16진수
+### 문제
+
+https://www.acmicpc.net/problem/16480
+![BOJ16480](https://i.imgur.com/LAO9mX4.png)
+
+  
+### 풀이
+
+삼각형 ABC에서 외심 R과 내심 r 이 존재할 때, (외심과 내심 사이 직선거리^2)을 구하는 문제
+
+이는 오일러 삼각형 정리 (Euler's triangle theorem) 를 구현하는 문제이다.
+
+https://ko.wikipedia.org/wiki/%EC%98%A4%EC%9D%BC%EB%9F%AC_%EC%82%BC%EA%B0%81%ED%98%95_%EC%A0%95%EB%A6%AC
+
+오일러 삼각형 정리에서 외심과 내심 사이의 거리의 제곱은 R(R-2r)이다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double ld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+// https://www.acmicpc.net/problem/16480
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll R,r;
+    cin >> R >> r;
+    // https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry
+    cout << (R*R) - (2*R*r);
+
+
+	return 0;
+}
+```
