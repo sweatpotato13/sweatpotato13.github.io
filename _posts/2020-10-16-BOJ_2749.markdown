@@ -1,0 +1,53 @@
+---
+layout: post
+title: "[C++] 백준 2749번 피보나치 수 3"
+date: "2020-10-16 08:12:44 +0900"
+tags: [boj, algorithm]
+---
+
+# 백준 2749번 피보나치 수 3
+### 문제
+
+https://www.acmicpc.net/problem/2749
+![BOJ16480](https://i.imgur.com/Mke9JHz.png)
+
+  
+### 풀이
+
+단순히 n번째 피보나치 수를 출력하면 되는 문제인데
+
+n의 범위가 1,000,000,000,000,000,000 까지라 dp로도 재귀로도 해결할 수 없다.
+
+이는 피사노 주기를 이용하여 해결하여야 한다.
+
+피사노 주기란 피보나치 수에 mod k를 한 수는 항상 일정 주기를 갖는데 그 주기를 의미한다.
+
+이 문제의 mod 1000000에 대해서는 피사노 주기는 150만이므로 150만주기로 반복하게된다.
+
+https://en.wikipedia.org/wiki/Pisano_period
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+typedef long long ll;
+using namespace std;
+// https://www.acmicpc.net/problem/2749
+#define MOD 1000000
+int dp[1500001] = {0,1,1,2,3,5,};	//150만 주기로 반복
+int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	ll n;
+	cin >> n;
+	for(int i = 5;i<=1500000;i++){
+		dp[i] = (dp[i-1]+dp[i-2]) % MOD;
+	}
+	cout << dp[n%1500000];
+
+	return 0;
+}
+```
