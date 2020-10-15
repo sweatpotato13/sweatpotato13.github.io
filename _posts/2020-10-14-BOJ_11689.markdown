@@ -5,7 +5,7 @@ date: "2020-10-14 08:12:44 +0900"
 tags: [boj, algorithm]
 ---
 
-# 백준 1550번 16진수
+# 백준 11689번 GCD(n, k) = 1
 ### 문제
 
 https://www.acmicpc.net/problem/11689
