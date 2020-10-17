@@ -1,0 +1,59 @@
+---
+layout: post
+title: "[C++] 백준 9661번 돌 게임 7"
+date: "2020-10-17 18:02:44 +0900"
+tags: [boj, algorithm]
+---
+
+# 백준 9661번 돌 게임 7
+### 문제
+
+https://www.acmicpc.net/problem/9661
+![BOJ9661](https://i.imgur.com/ymc3cyi.png)
+
+  
+### 풀이
+
+상근이와 창영이가 돌을 4^x 개씩 가져갈 수 있다고 할 때 돌이 n개일 때 돌을 못가져가면 지게된다. 이때 누가 이기는지 맞추는 문제이다.
+
+1개일땐 상근이가 남은 1개를 가져가면서 승리
+
+2개일땐 창영이가 마지막 1개를 가져가면서 승리
+
+3개일땐 상근이가, 4개일땐 상근이가 5개일땐 창영이가 이긴다. 
+
+이후 6개일때부터 계산해보면 규칙이 보일것이다.
+
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll; 
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a)) 
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a)) 
+#define rep(i, n) FOR(i, 0, n) 
+#define repn(i, n) FORN(i, 1, n) 
+#define tc(t) while (t--) 
+// https://www.acmicpc.net/problem/9661
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    ll n;
+    cin >> n;
+    ll ans = n%5;
+    if(ans == 0 || ans == 2) cout << "CY";
+    else cout << "SK";
+
+    return 0;
+}
+```
