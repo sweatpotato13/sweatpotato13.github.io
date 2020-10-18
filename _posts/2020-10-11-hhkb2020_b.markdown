@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[C++] HHKB Programming Contest 2020 B번"
+title: "[C++] HHKB Programming Contest 2020 B번 Futon"
 date: "2020-10-11 01:00:00 +0900"
 tags: [atcoder, algorithm]
 ---
