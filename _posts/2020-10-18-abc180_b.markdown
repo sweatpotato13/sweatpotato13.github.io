@@ -1,0 +1,66 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 180 B번 Various distances"
+date: "2020-10-18 23:32:00 +0900"
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 180 B번 Various distances
+### 문제
+
+https://atcoder.jp/contests/abc180/tasks/abc180_b
+![abc180_b](https://i.imgur.com/qnuilrK.png)
+  
+  
+### 풀이
+
+n개의 정수 포인트가 주어졌을 때 맨하탄 거리, 유클리드 거리, 체비쇼프 거리를 각각 구하는 문제
+
+각 거리의 공식은 문제에 적혀있으므로 그대로 구현하면 된다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc180/tasks/abc180_b
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+	
+	ll n;
+	cin >> n;
+	ll Manhattan = 0;
+	ld Euclidian = 0;
+	ll Chebyshev = 0;
+	rep(i,n){
+		ll e;
+		cin >> e;
+		e = abs(e);
+		Manhattan += e;
+		Chebyshev = max(Chebyshev, e);
+		Euclidian += (e*e);
+	}
+	Euclidian = sqrt(Euclidian);
+	cout << fixed;
+	cout.precision(15);
+	cout << Manhattan << "\n";
+	cout << Euclidian << "\n";
+	cout << Chebyshev << "\n";
+
+	
+}
+```

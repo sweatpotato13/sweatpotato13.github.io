@@ -1,0 +1,49 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 180 A번 box"
+date: "2020-10-18 23:32:00 +0900"
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 180 A번 box
+### 문제
+
+https://atcoder.jp/contests/abc180/tasks/abc180_a
+![abc180_a](https://i.imgur.com/p4jtjvZ.png)
+  
+  
+### 풀이
+
+너무 간단한 산수 문제
+
+문제를 잘 읽으면 바로 풀 수 있는 문제.
+  
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc180/tasks/abc180_a
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+	
+	ll n,a,b;
+	cin >> n >> a >> b;
+	cout << n - a + b;
+	
+}
+```

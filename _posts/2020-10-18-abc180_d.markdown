@@ -1,0 +1,60 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 180 D번 Takahashi Unevolved"
+date: "2020-10-18 23:32:00 +0900"
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 180 D번 Takahashi Unevolved
+### 문제
+
+https://atcoder.jp/contests/abc180/tasks/abc180_d
+![abc180_d](https://i.imgur.com/c7Qc4Kv.png)
+  
+  
+### 풀이
+
+타카하시를 진화시키지 않으면서 경험치를 최대로 얼마까지 쌓을 수 있는지 구하는 문제이다.
+
+Kakomon Gym 으로 가면 힘이 A배오르고 AtCoder Gym 으로 가면 힘이 B오르고 공통적으로 1의 경험치를 얻는다.
+
+최초 힘 스탯 X에서 A배가 B보다 적을 때 까지 A배를 하다가 B가 A배보다 적어지는 순간 B를 계속 선택하면 최대의 경험치를 획득할 수 있다.
+
+단순하게 이를 구현하면 정답
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc180/tasks/abc180_d
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+	
+	ll x,y,a,b;
+	cin >> x >> y >> a >> b;
+	ll ans = 0;
+	while(x<y/a && x*a<x+b){
+		ans++;
+		x *= a;
+	}
+	ans+=(y-1-x)/b;
+	cout << ans;
+
+	return 0;
+}
+```
