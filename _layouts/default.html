@@ -77,7 +77,31 @@
         <div class="tile is-parent is-vertical sidebar">
 
           <div class="tile is-child widget">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title nice-title">
+                  Category
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="content nice-text">
+                    <ul>
+                        {% assign pages_list = site.pages %}
+                        {% for node in pages_list %}
+                        {% if node.title != null %}
+                        {% if node.layout == "category" %}
+                        <li><a class="category-link {% if page.url == node.url %} active{% endif %}"
+                                href="{{ site.baseurl }}{{ node.url }}">{{ node.title }}</a></li>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div class="tile is-child widget">
             <div class="card">
               <header class="card-header">
                 <p class="card-header-title nice-title">
