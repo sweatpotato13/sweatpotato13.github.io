@@ -2,6 +2,7 @@
 layout: post
 title: "[C++] 백준 9661번 돌 게임 7"
 date: "2020-10-17 18:02:44 +0900"
+categories: [ps]
 tags: [boj, algorithm]
 ---
 

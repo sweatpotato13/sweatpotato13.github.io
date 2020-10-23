@@ -2,6 +2,7 @@
 layout: post
 title: Nest.js 튜토리얼 따라하기 1편
 date: "2020-10-08 20:12:58 +0900"
+categories: [Tutorial]
 tags: [nestjs,tutorial]
 ---
 

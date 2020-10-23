@@ -2,6 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 180 B번 Various distances"
 date: "2020-10-18 23:32:00 +0900"
+categories: [ps]
 tags: [atcoder, algorithm]
 ---
 
