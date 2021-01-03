@@ -1,0 +1,92 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 182 B번 Almost GCD"
+date: "2021-01-03 10:41:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 182 B번 Almost GCD
+### 문제
+
+https://atcoder.jp/contests/abc182/tasks/abc182_b
+![abc182_a](https://i.imgur.com/5ciUftw.png)
+  
+  
+### 풀이
+
+정수 k의 GCD-ness를 A1 ~ Ak의 수중 k로 나누어지는 정수의 개수라고 했을 때
+
+가장 큰 GCD-ness를 갖는 정수 k를 찾는 문제
+
+입력받은 수열 중 최댓값까지의 소수들을 k로 하여 해당 값들의 GCD-ness를 구하여 GCD-ness가 가장 큰 값 하나를 출력하면 된다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc182/tasks/abc182_b
+ll che[1001] ={0,};
+vll prime;
+void getChe(ll num) {
+    for (int i = 2; i <= num; i++) {
+        che[i] = i;
+    }
+    for (int i = 2; i <= num; i++) { 
+        if (che[i] == 0) 
+            continue;
+        for (int j = i + i; j <= num; j += i) {
+            che[j] = 0;
+        }
+    }
+}
+void getPrime(ll num){
+    for(int i = 2;i<=num;i++){
+        if(che[i])
+            prime.push_back(i);
+    }
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    ll max = 0;
+    ll ans = 0;
+    ll n;
+    cin >> n;
+    vll v(n);
+    rep(i,n) cin >> v[i];
+    sort(all(v));
+    getChe(v[v.size()-1]);
+    getPrime(v[v.size()-1]);
+    for(auto k : prime){
+        ll cnt = 0;
+        for(int i =0;i<n;i++){
+            if(v[i] % k == 0) cnt++;
+        }
+        if(cnt > max) {
+            max = cnt;
+            ans = k;
+        }
+    }
+    cout << ans;
+    
+ 
+    return 0;
+}
+```

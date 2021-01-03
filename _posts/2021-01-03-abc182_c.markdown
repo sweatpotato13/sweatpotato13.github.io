@@ -1,0 +1,68 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 182 C번 To 3"
+date: "2021-01-03 10:41:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 182 C번 To 3
+### 문제
+
+https://atcoder.jp/contests/abc182/tasks/abc182_c
+![abc182_c](https://i.imgur.com/5Mmyt76.png)
+  
+  
+### 풀이
+
+0이 아닌 정수 N이 주어졌을때 몇개의 숫자를 지워 3의 배수로 만들 수 있는지 구하는 문제
+
+임의의 정수가 3의 배수가 되려면 모든 자릿수의 합이 3의 배수가 되어야 한다.
+
+즉 N의 자릿수의 합을 3으로 나눈 나머지가 0이면 답은 0으로 확정.
+N의 자릿수의 합을 3으로 나눈 나머지가 1이면 1을 1번지우거나 2를 2번지워서 0으로 만들 수 있다.
+N의 자릿수의 합을 3으로 나눈 나머지가 2이면 2를 1번지우거나 1을 2번 지워서 0으로 만들 수 있다.
+위 경우에 포함되지 않는다면 3의 배수로 만들 수 없다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc182/tasks/abc182_c
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    string n;
+    cin >> n;
+    ll len = n.length();
+    ll val=0, one=0, two=0;
+    for(auto k : n){
+        ll temp = k - '0';
+        val += temp;
+        if(temp % 3 == 1) one++;
+        else if(temp % 3 == 2) two++;
+    }
+    val = val % 3;
+    if(val == 0) cout << 0;
+    else if((val == 1 && one > 0 && len > 1) || (val == 2 && two > 0 && len > 1)) cout << 1;
+    else if((val == 1 && two > 1 && len > 2) || (val == 2 && one > 1 && len > 2)) cout << 2;
+    else cout << -1;
+ 
+    return 0;
+}
+```

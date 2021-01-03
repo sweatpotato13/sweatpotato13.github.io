@@ -1,0 +1,79 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 183 C번 Travel"
+date: "2021-01-03 10:41:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 183 C번 Travel
+### 문제
+
+https://atcoder.jp/contests/abc183/tasks/abc183_c
+![abc183_c](https://i.imgur.com/pySboXc.png)
+  
+  
+### 풀이
+
+1번 도시에서 시작하여 모든 도시를 찍고 다시 1번도시로 돌아오는 루트를 구성할 때 
+
+정확하게 k시간이 걸리는 루트는 총 몇개인지 찾는 문제
+
+DFS로 모든 케이스를 구성하여 그 값이 k와 일치하는것이 몇개인지 카운트하면 정답
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc183/tasks/abc183_c
+ll n, k;
+ll a[10][10] = {0,};
+ll ans = 0;
+ll isVisited[10] ={0,};
+void dfs(int u , int cnt , int sum)
+{       
+        if(cnt == n - 1)
+        {
+                sum += a[u][1];
+                if(sum == k) ans ++ ;
+                return ;
+        }
+        isVisited[u] = 1;
+        repn(i , n)
+        {
+                if(isVisited[i]) continue ;
+                isVisited[i] = 1;
+                dfs(i , cnt + 1 , sum + a[u][i]);
+                isVisited[i] = 0;
+        }
+}   
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    cin >> n >> k;
+    repn(i,n){
+        repn(j,n){
+            cin >> a[i][j];
+        }
+    }
+    dfs(1,0,0);
+    cout << ans;
+ 
+    return 0;
+}
+```

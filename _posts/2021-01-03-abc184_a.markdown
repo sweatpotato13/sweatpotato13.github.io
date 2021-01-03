@@ -1,0 +1,49 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 184 A번 Determinant"
+date: "2021-01-03 10:41:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 184 A번 Determinant
+### 문제
+
+https://atcoder.jp/contests/abc183/tasks/abc184_a
+![abc184_a](https://i.imgur.com/KfqJLpW.png)
+  
+  
+### 풀이
+
+입력받은 2x2 행렬의 행렬값을 구하면 되는 문제
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc184/tasks/abc184_a
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    ll a,b,c,d;
+    cin >> a >> b >> c >> d;
+    cout << a*d - b*c;
+ 
+    return 0;
+}
+```

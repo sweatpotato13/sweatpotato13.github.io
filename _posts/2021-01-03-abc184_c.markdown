@@ -1,0 +1,68 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 184 C번 Super Ryuma"
+date: "2021-01-03 10:41:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 184 C번 Super Ryuma
+### 문제
+
+https://atcoder.jp/contests/abc183/tasks/abc184_c
+![abc184_c](blob:https://imgur.com/021c06f8-5dca-4bf6-a74d-020d4a569774)
+  
+  
+### 풀이
+
+(r1,c1)에서 (r2,c2)로 이동할 때 총 몇번의 이동으로 도착할 수 있는 지 구하는 문제
+
+이동 할 때는 (a,b)에서 (c,d)로 이동한다고 할 때 
+
+* (1) *a+b = c+d
+
+* (2) a-b = c-d
+
+* (3) |a-c| + |b-d| <= 3 
+
+인 경우에만 이동할 수 있다.
+
+(1)과 (2)를 사용하면 동일한 parity를 가진 모든 점으로 이동할 수 있다.
+
+여기에 (3)을 추가로 사용하면 최대 3번의 이동으로 모든 점으로 이동할 수 있게 된다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc184/tasks/abc184_c
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    ll r1,c1,r2,c2;
+    cin >> r1 >> c1 >> r2 >> c2;
+    ll r = r2-r1;
+    ll c = c2-c1;
+    ll ans = 3;
+    if(r == 0 && c == 0) ans = 0;
+    else if(r == c || r == -c || abs(r) + abs(c) <= 3) ans = 1;
+    else if((r1 + r2 + c1 + c2)%2 == 0 || abs(r + c) <= 3 || abs(r - c) <= 3 || abs(r) + abs(c) <= 6) ans = 2;
+    cout << ans;
+    return 0;
+}
+```
