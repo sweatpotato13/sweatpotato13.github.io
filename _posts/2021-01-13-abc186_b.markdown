@@ -1,0 +1,70 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 186 B번 Blocks on Grid"
+date: "2021-01-13 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 186 B번 Blocks on Grid
+### 문제
+
+https://atcoder.jp/contests/abc186/tasks/abc186_b
+![abc186_b](https://i.imgur.com/ypIasnm.png)
+  
+  
+### 풀이
+
+H x W 만큼의 격자에 Ai,j 만큼의 블록이 쌓여있을 때 최소 몇개를 제거해야 모든 격자의 블록 높이가 동일해 지는지 묻는 문제
+
+블록을 추가하는것이 아닌 제외만 할 수 있다는것에 유의
+
+모든 칸을 가장 높이가 낮은 칸에 맞추면 가능하다 
+
+H,W <= 100 이기 때문에 O(n^2)으로도 충분히 해결 가능
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc186/tasks/abc186_b
+ll a[101][101] ={0,};
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    ll h,w;
+    cin >> h >> w;
+    ll low = 101 , high = -1;
+    for(int i = 0;i<h;i++){
+        for(int j = 0;j<w;j++){
+            cin >> a[i][j];
+            low = min(low, a[i][j]);
+            high = max(high,a[i][j]);
+        }
+    }
+    ll ans = 0;
+    for(int i = 0;i<h;i++){
+        for(int j = 0;j<w;j++){
+            ans += (a[i][j] - low);
+        }
+    }
+    cout << ans;
+ 
+    return 0;
+}
+```

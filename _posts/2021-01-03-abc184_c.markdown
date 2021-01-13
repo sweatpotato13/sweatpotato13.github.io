@@ -9,7 +9,7 @@ tags: [atcoder, algorithm]
 # AtCoder Beginner Contest 184 C번 Super Ryuma
 ### 문제
 
-https://atcoder.jp/contests/abc183/tasks/abc184_c
+https://atcoder.jp/contests/abc184/tasks/abc184_c
 ![abc184_c](blob:https://imgur.com/021c06f8-5dca-4bf6-a74d-020d4a569774)
   
   

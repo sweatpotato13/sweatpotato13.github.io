@@ -1,0 +1,57 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 185 C번 Duodecim Ferra"
+date: "2021-01-13 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 185 C번 Duodecim Ferra
+### 문제
+
+https://atcoder.jp/contests/abc185/tasks/abc185_c
+![abc185_c](https://i.imgur.com/Qp1rFiu.png)
+  
+  
+### 풀이
+
+길이가 L인 막대가 있을 때 11곳을 잘라서 총 12마디를 만든다고 할 때 총 가능한 경우의 수를 구하는 문제
+
+단순한 경우의 수 문제로 Combination(L-1, 11) 만큼의 경우의 수가 나온다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc185/tasks/abc185_c
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    ll l;
+    cin >> l;
+    ll ans = 1;
+    repn(i,11) {
+        ans *= (l-i);
+        ans /= i;
+    }
+    cout << ans;
+    
+    return 0;
+}
+
+```

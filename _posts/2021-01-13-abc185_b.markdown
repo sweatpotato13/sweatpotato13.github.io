@@ -1,0 +1,71 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 185 B번 Smartphone Addiction"
+date: "2021-01-13 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 185 B번 Smartphone Addiction
+### 문제
+
+https://atcoder.jp/contests/abc185/tasks/abc185_b
+![abc185_b](https://i.imgur.com/JxiXqlT.png)
+  
+  
+### 풀이
+
+스마트폰의 배터리가 현재 n만큼 있고 집에 t시간에 도착한다고 한다.
+그때 ai ~ bi 시간에는 카페에서 충전을 한다고 할때 집까지 배터리를 다 쓰지 않고 갈 수 있는지 여부를 확인하는 문제
+
+ai < bi < aj < bj (i < j) 가 보장되기 때문에 순서대로 체크하면서 배터리가 0이 되는지 아닌지 체크해가면서 진행하면 된다.
+m <= 1000이기 때문에 O(n)으로도 충분히 해결 가능한 문제
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc185/tasks/abc185_b
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    bool isOk = true;
+    ll n, m, t;
+    cin >> n >> m >> t;
+    ll tmp = 0, maxCap = n;
+    rep(i, m) {
+        ll a, b;
+        cin >> a >> b;
+        n -= a - tmp;
+        if (n < 1) {
+            cout << "No";
+            return 0;
+        }
+        n = min(n + (b - a), maxCap);
+        tmp = b;
+    }
+    n -= t - tmp;
+    if (n < 1) {
+        cout << "No";
+        return 0;
+    } else
+        cout << "Yes";
+ 
+    return 0;
+}
+```

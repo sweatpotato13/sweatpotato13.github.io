@@ -1,21 +1,23 @@
 ---
 layout: post
-title: "[C++] AtCoder Beginner Contest 184 A번 Determinant"
-date: "2021-01-03 10:41:00 +0900"
+title: "[C++] AtCoder Beginner Contest 186 A번 Brick"
+date: "2021-01-13 20:30:00 +0900"
 categories: [ps]
 tags: [atcoder, algorithm]
 ---
 
-# AtCoder Beginner Contest 184 A번 Determinant
+# AtCoder Beginner Contest 186 A번 Brick
 ### 문제
 
-https://atcoder.jp/contests/abc184/tasks/abc184_a
-![abc184_a](https://i.imgur.com/KfqJLpW.png)
+https://atcoder.jp/contests/abc186/tasks/abc186_a
+![abc186_a](https://i.imgur.com/lLJWCyH.png)
   
   
 ### 풀이
 
-입력받은 2x2 행렬의 행렬값을 구하면 되는 문제
+트럭이 최대 N 킬로그램을 싣고 달릴 수 있을 때 W 킬로그램만큼의 짐을 옮기려면 몇번을 옮겨야하는지 묻는 문제
+
+N / W를 출력하면 정답
 
 ### 코드
 
@@ -35,14 +37,14 @@ typedef tuple<ll,ll,ll> tl3;
 #define rep(i, n) FOR(i, 0, n)
 #define repn(i, n) FORN(i, 1, n)
 #define tc(t) while (t--)
-// https://atcoder.jp/contests/abc184/tasks/abc184_a
+// https://atcoder.jp/contests/abc186/tasks/abc186_a
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
  
-    ll a,b,c,d;
-    cin >> a >> b >> c >> d;
-    cout << a*d - b*c;
+    ll n,w;
+    cin >> n >> w;
+    cout << n / w;
  
     return 0;
 }

@@ -9,7 +9,7 @@ tags: [atcoder, algorithm]
 # AtCoder Beginner Contest 184 B번 Quizzes
 ### 문제
 
-https://atcoder.jp/contests/abc183/tasks/abc184_b
+https://atcoder.jp/contests/abc184/tasks/abc184_b
 ![abc184_b](https://i.imgur.com/unR28UD.png)
   
   

@@ -1,0 +1,64 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 186 C번 Unlucky 7"
+date: "2021-01-13 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 186 C번 Unlucky 7
+### 문제
+
+https://atcoder.jp/contests/abc186/tasks/abc186_c
+![abc186_c](https://i.imgur.com/4RMuWqT.png)
+  
+  
+### 풀이
+
+1부터 n까지의 수 중 10진수와 8진수에서 7이 존재하지 않는 수는 몇가지인지 세는 문제
+
+n <= 10^5이기 때문에 모든 수를 돌면서 체크해도 충분히 통과가 가능하다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll,ll,ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc186/tasks/abc186_c
+string toOct(ll n){
+    string s = "";
+    while(n){
+        s += to_string(n%8);
+        n /= 8;
+    }
+    return s;
+}
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    ll n;
+    cin >> n;
+    ll ans = 0;
+    for(ll i = 1;i<=n;i++){
+        if(to_string(i).find('7') == -1 && toOct(i).find('7') == -1)
+            ans++;
+    }
+    cout << ans;
+    
+    return 0;
+}
+```

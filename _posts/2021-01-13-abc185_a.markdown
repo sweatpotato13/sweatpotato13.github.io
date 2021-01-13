@@ -1,0 +1,53 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 185 A번 ABC Preparation"
+date: "2021-01-13 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 185 A번 ABC Preparation
+### 문제
+
+https://atcoder.jp/contests/abc185/tasks/abc185_a
+![abc185_a](https://i.imgur.com/N8KwqFq.png)
+  
+  
+### 풀이
+
+100, 200, 300, 400점 짜리 문제가 A1, A2, A3, A4개 있을 때
+대회를 개최하려면 각 문제가 1개 있어야 한다고 한다. 
+그 때 총 몇번의 대회를 개최할 수 있는지 묻는 문제
+
+입력값의 최소값을 출력하면 그 값이 대회를 개최할 수 있는 최댓값이 된다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc185/tasks/abc185_a
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    ll a[4];
+    cin >> a[0] >> a[1] >> a[2] >> a[3];
+    cout << min(a[0],min(a[1],min(a[2],a[3])));
+ 
+    return 0;
+}
+```
