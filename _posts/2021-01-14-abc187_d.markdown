@@ -1,0 +1,68 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 187 D번 Choose Me"
+date: "2021-01-14 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+---
+
+# AtCoder Beginner Contest 187 D번 Choose Me
+### 문제
+
+https://atcoder.jp/contests/abc187/tasks/abc187_d
+![abc187_d](https://i.imgur.com/a3bvOdB.png)
+  
+  
+### 풀이
+
+타카하시가 투표에서 이기려면 연설을 최소 몇번해야하는지 묻는 문제
+
+x를 타카하시 투표수 - 아오키 투표수 라고 한다면
+x는 i번 마을을 방문할 때 마다 2Ai+Bi 씩 증가함
+x > 0 이 성립된다면 그때부터는 타카하시가 더 많은 득표를 할 수 있게 된다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc187/tasks/abc187_d
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n;
+    cin >> n;
+    vll x(n);
+    ll temp = 0;
+    ll ans = 0;
+    rep(i,n){
+        ll a,b;
+        cin >> a >> b;
+        temp -= a;
+        x[i] = a+a+b;
+    }
+    sort(all(x));
+    while(temp <= 0){
+        temp += x.back();
+        x.pop_back();
+        ans++;
+    }
+    cout << ans;
+
+    return 0;
+}
+```

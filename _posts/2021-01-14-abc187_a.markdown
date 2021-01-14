@@ -1,0 +1,60 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 187 A번 Large Digits"
+date: "2021-01-14 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 187 A번 Large Digits
+### 문제
+
+https://atcoder.jp/contests/abc187/tasks/abc187_a
+![abc187_a](https://i.imgur.com/svFL36S.png)
+  
+  
+### 풀이
+
+입력받은 두 수중 각 자릿수 합이 높은 수의 각 자릿수 합을 출력하는 문제
+입력받은 두 수 A,B 는 세자리 수로 고정되어있기 때문에 각 수의 자릿수 합을 구해서 큰 수를 출력하면 정답
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc187/tasks/abc187_a
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll a,b;
+    cin >> a >> b;
+    ll _a = 0, _b = 0;
+    while(a){
+        _a += a%10;
+        a/=10;
+    }
+    while(b){
+        _b += b%10;
+        b/=10; 
+    }
+    cout << max(_a,_b);
+
+    return 0;
+}
+```
