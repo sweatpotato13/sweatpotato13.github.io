@@ -8,6 +8,13 @@ layout: default
 
     <span class="post-text">{{ content }}</span>
     {% include post-pagination.html %}
+    <article>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+            </script>
+            <script type="text/javascript" src="http://cdn.mathjax.org/math...">
+            </script>        
+    </article>
 </div>
 
 <!--<div class="box">-->
