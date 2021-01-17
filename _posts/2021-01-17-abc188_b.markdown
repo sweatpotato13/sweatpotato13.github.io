@@ -1,0 +1,64 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 188 B번 Orthogonality"
+date: "2021-01-17 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 188 B번 Orthogonality
+### 문제
+
+https://atcoder.jp/contests/abc188/tasks/abc188_b
+![abc188_b](https://i.imgur.com/J4KeXgS.png)
+  
+  
+### 풀이
+
+길이가 n인 수열 A와 B가 있을때 ![ss](https://i.imgur.com/6YGCgC3.gif) 의 합이 0이면 Yes 아니면 No를 출력
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc188/tasks/abc188_b
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n;
+    cin >> n;
+    vll a(n), b(n);
+    ll res = 0;
+    rep(i,n){
+        cin >> a[i];
+    }
+    rep(i,n){
+        cin >> b[i];
+    }
+    rep(i,n){
+        res += (a[i] * b[i]);
+    }
+    if(res == 0){
+        cout << "Yes";
+    }
+    else cout << "No";
+
+    return 0;
+}
+```
