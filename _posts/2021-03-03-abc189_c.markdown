@@ -1,0 +1,66 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 189 C번 Mandarin Orange"
+date: "2021-03-03 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 189 C번 Mandarin Orange
+### 문제
+
+https://atcoder.jp/contests/abc189/tasks/abc189_c
+![abc189_c](https://i.imgur.com/G2uKVM8.png)
+  
+  
+### 풀이
+
+(l,r,x)가 최대치가 되게끔 오렌지를 먹으려면 최대 몇개를 먹을 수 있는가를 묻는 문제
+
+A <= 10000 이기 때문에 O(N^2logN) 으로 풀면 TLE가 나기 떄문에 O(N^2) 에서 해결해야한다.
+
+l,r을 for-loop를 돌며 해당 범위의 최소값으로 갯수만큼 곱해주어 이를 반복하여 최대값을 찾아 출력
+
+말이 어렵다면 아래 코드를 보면 금방 이해가 갈 것이다. :(
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc189/tasks/abc189_c
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n;
+    cin >> n;
+    vll a(n);
+    ll ans = 0;
+    rep(i,n) cin >> a[i];
+    rep(i,n){
+        ll m = a[i];
+        for(int j = i;j<n;j++){
+            m = min(m,a[j]);
+            ans = max(ans, (j-i+1)*m);
+        }
+    }
+    cout << ans;
+
+    return 0;
+}
+```
