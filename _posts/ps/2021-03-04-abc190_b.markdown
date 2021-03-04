@@ -1,0 +1,61 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 190 B번 Magic 3"
+date: "2021-03-04 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 190 B번 Magic 3
+### 문제
+
+https://atcoder.jp/contests/abc190/tasks/abc190_b
+![abc190_b](https://i.imgur.com/d2iLoRu.png)
+  
+  
+### 풀이
+
+타카하시가 어떤 몬스터와 싸우는데 그 몬스터는 S초 이상걸리는 공격은 다 피해버리고, D보다 낮은 공격은 싹다 무시해버린다.
+
+그럴때 과연 타카하시는 몬스터를 때릴 수 있을까?
+
+N개의 (x,y) 쌍을 모두 체크하여 한번이라도 조건안에 들어오면 Yes를 출력하고 아니면 No를 출력
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+string ans[2] = {"No", "Yes"};
+// https://atcoder.jp/contests/abc190/tasks/abc190_b
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n,s,d;
+    cin >> n >> s >> d;
+    vll x(n), y(n);
+    ll isPossible = false;
+    rep(i,n) cin >> x[i] >> y[i];
+    rep(i,n){
+        if(x[i] < s && y[i] > d) isPossible = true;
+    }
+    cout << ans[isPossible];
+
+    return 0;
+}
+```

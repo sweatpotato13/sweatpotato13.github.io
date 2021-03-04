@@ -1,0 +1,59 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 190 D번 Staircase Sequences"
+date: "2021-03-04 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 190 D번 Staircase Sequences
+### 문제
+
+https://atcoder.jp/contests/abc190/tasks/abc190_d
+![abc190_d](https://i.imgur.com/t7bjYTI.png)
+  
+  
+### 풀이
+
+정수 N이 있을때 어떠한 연속 수열을 더했을때 N이 되는 경우의 수가 몇개인지 찾는 문제
+
+N의 약수 i중 (2N/i)- i + 1이 2로 나누어지는지 확인하면 그 수를 세면 정답
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc190/tasks/abc190_d
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll n;
+    cin >> n;
+    ll ans = 0;
+    for(ll i = 1;i*i<=n;i++){
+        if(n % i == 0){
+            if(i % 2 == 1) ans++;
+            if(n/i != i && (n/i)%2 == 1) ans++;
+        }
+    }
+    cout << ans * 2;
+
+    return 0;
+}
+```
