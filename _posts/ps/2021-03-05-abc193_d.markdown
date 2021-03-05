@@ -1,0 +1,97 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 193 D번 Poker"
+date: "2021-03-05 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 193 D번 Poker
+### 문제
+
+https://atcoder.jp/contests/abc193/tasks/abc193_d
+![abc193_d](https://i.imgur.com/Ttf7LyD.png)
+  
+  
+### 풀이
+
+1부터 9까지 카드뭉치가 K개가 있다.
+
+타카하시와 아오키가 이 카드뭉치들로 포커를 친다.
+
+양 플레이어는 4장의 카드는 오픈한 상태 한장은 히든이다.
+
+여기서 타카하시의 승률을 계산하는 문제
+
+히든이 양 플레이어 통틀어 2칸이 있으니 1~9까지 가능한 모든 경우를 계산하여 타카하시가 이길때마다 그 확률을 더해서 총 합을 구한다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc193/tasks/abc193_d
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+ 
+    ll k;
+    cin >> k;
+    string s, t1;
+    cin >> s >> t1;
+    ll num[10] = {};
+    rep(i, 10) num[i] = k;
+    rep(i, 4) {
+        ll a = s[i] - '0';
+        ll b = t1[i] - '0';
+        --num[a];
+        --num[b];
+    }
+    vll t(10, 0), a(10, 0);
+    rep(k, 4) {
+        t[s[k] - '0']++;
+        a[t1[k] - '0']++;
+    }
+    ld ans = 0;
+    for (ll i = 1; i <= 9; i++) {
+        auto ti = t;
+        ti[i]++;
+        ll sc_t = 0;
+        for (ll l = 1; l <= 9; l++) {
+            sc_t += l * pow(10, ti[l]);
+        }
+        for (ll j = 1; j <= 9; j++) {
+            vll aj = a;
+            aj[j]++;
+            if (ti[i] + aj[i] > k) continue;
+            if (ti[j] + aj[j] > k) continue;
+            ll sc_a = 0;
+            for (ll l = 1; l <= 9; l++) {
+                sc_a += l * pow(10, aj[l]);
+            }
+            ld ch1 = num[i];
+            ld ch2 = num[j];
+            if (i == j) ch2--;
+            if (sc_t > sc_a) ans += ch1 / (9 * k - 8) * ch2 / (9 * k - 9);
+        }
+    }
+    cout << fixed;
+    cout.precision(10);
+    cout << ans;
+    return 0;
+}
+```

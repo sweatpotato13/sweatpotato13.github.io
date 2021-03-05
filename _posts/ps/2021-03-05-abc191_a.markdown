@@ -1,0 +1,59 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 191 A번 Vanishing Pitch"
+date: "2021-03-05 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 191 A번 Vanishing Pitch
+### 문제
+
+https://atcoder.jp/contests/abc190/tasks/abc191_a
+![abc191_a](https://i.imgur.com/rsN7rP2.png)
+  
+  
+### 풀이
+
+타카하시와 아오키가 야구를 한다. 타카하시는 투수고 아오키는 타자인데 타카하시는 미친 마구를 던진다.
+
+바로 보이지 않는 공을 던진다고 한다. Vm/s로 공을 던지는데 공을 던진 이후 T초부터 S초 사이는 안보인다고 했을때
+
+D 미터 떨어져있는 아오키는 공을 칠 수 있을까?
+
+아오키가 V*t <= D <= v*s 사이에 있으면 공이 보이지 않아서 칠 수 없다!
+
+그러면 저 범위가 아니라면 공을 칠 수 있는것
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc191/tasks/abc191_a
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    ll v,t,s,d;
+    cin >> v >> t >> s >> d;
+    if(d < v*t || d > v*s) cout << "Yes";
+    else cout << "No";
+
+    return 0;
+}
+```

@@ -1,0 +1,63 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 193 C번 Unexpressed"
+date: "2021-03-05 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 193 C번 Unexpressed
+### 문제
+
+https://atcoder.jp/contests/abc193/tasks/abc193_c
+![abc193_c](https://i.imgur.com/8lBftbK.png)
+  
+  
+### 풀이
+
+1부터 N까지의 수 중에 a^b 로 표현할 수 없는 수는 몇개인지 찾는 문제
+
+a^b로 표현할 수 있다는 말은 최소 a^2라고 했을때 a는 root(N)이하이다.
+
+root N이하의 모든 수를 돌면서 모든 거듭제곱꼴을 set에 모아두고 그 사이즈만큼 N에서 뺀다.
+
+map을 사용해도 풀 수는 있지만 수가 커지면 TLE가 발생한다.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc193/tasks/abc193_c
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    unordered_set<ll> s;
+    for(ll a = 2; a * a <= n; a++){
+        ll x = a * a;
+        while(x <= n){
+            s.insert(x);
+            x *= a;
+        }
+    }
+    cout << n - s.size();
+    return 0;
+}
+```

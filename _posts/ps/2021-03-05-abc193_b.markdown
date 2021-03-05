@@ -1,0 +1,68 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 193 B번 Play Snuke"
+date: "2021-03-05 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 193 B번 Play Snuke
+### 문제
+
+https://atcoder.jp/contests/abc193/tasks/abc193_b
+![abc193_b](https://i.imgur.com/AzsKoed.png)
+  
+  
+### 풀이
+
+타카하시는 게임을 사고싶어한다.
+
+N개의 가게가 있다고 할 때 각 가게까지는 타카하시가 있는 곳부터 가게까지 Ai분이 걸리고 가격은 Pi엔이며 Xi개의 물량이 있다.
+
+1분에 1개씩 물량이 없어진다고 할 때 가장 싸게 산다면 얼마인가, 혹시 못산다면 -1를 출력
+
+N개의 가게를 모두 돌면서 걸리는 시간보다 물량이 더 많은 가게의 가격을 비교해서 최저가를 찾으면 정답
+
+그런 가게가 없다면 -1을 출력하자.
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc193/tasks/abc193_b
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    vll a(n), p(n), x(n);
+    ll ans = INT32_MAX;
+    rep(i,n){
+        cin >> a[i] >> p[i] >> x[i];
+        if(x[i] > a[i]){
+            ans = min(ans, p[i]);
+        }
+    }
+    if(ans == INT32_MAX) ans = -1;
+    cout << ans;
+
+
+    return 0;
+}
+```

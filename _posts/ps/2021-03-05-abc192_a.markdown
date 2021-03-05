@@ -1,0 +1,55 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 192 A번 Star"
+date: "2021-03-05 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 192 A번 Star
+### 문제
+
+https://atcoder.jp/contests/abc190/tasks/abc192_a
+![abc192_a](https://i.imgur.com/TxMdEUY.png)
+  
+  
+### 풀이
+
+코인이 X개가 있다. 100개마다 상품을 준다.
+
+상품을 1개 더받으려면 몇코인이 더있어야할까
+
+100 - (X % 100) 을 출력하면 정답
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc192/tasks/abc192_a
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+ 
+    ll x;
+    cin >> x;
+    ll ans = 100 - (x%100);
+    cout << ans;
+
+    return 0;
+}
+```

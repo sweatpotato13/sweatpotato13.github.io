@@ -1,0 +1,69 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 191 C번 Digital Graffiti"
+date: "2021-03-05 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 191 C번 Digital Graffiti
+### 문제
+
+https://atcoder.jp/contests/abc190/tasks/abc191_c
+![abc191_c](https://i.imgur.com/ToAGnBK.png)
+  
+  
+### 풀이
+
+까맣게 색칠한 부분에서 최소 몇 개의 면이 존재하는지 확인하는 문제
+
+H,W <= 10 이기 때문에 굳이 DFS, BFS를 돌지 않아도 O(N^2)으로 충분히 가능하다
+
+만약에 한 점에서 상하좌우 4개의 셀 중 1개 혹은 3개가 검은색인 포인트의 갯수를 세면 정답
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc191/tasks/abc191_c
+string board[11];
+ll dir[4][2] = {{0,0},{1,0},{0,1},{1,1}};
+ll h,w;
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> h >> w;
+    rep(i, h){
+        cin >> board[i];
+    }
+    ll ans = 0;
+    for(int i = 0;i<h-1;i++){
+        for(int j = 0;j<w-1;j++){
+            ll cnt = 0;
+            for(int k = 0;k<4;k++){
+                if(board[i+dir[k][0]][j+dir[k][1]] == '#') 
+                    cnt++;
+            }
+            if(cnt == 1 || cnt == 3) ans++;
+        }
+    }
+    cout << ans;
+    return 0;
+}
+```
