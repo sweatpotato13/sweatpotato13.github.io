@@ -42,12 +42,15 @@ typedef tuple<ll, ll, ll> tl3;
 #define tc(t) while (t--)
 // https://atcoder.jp/contests/abc191/tasks/abc191_c
 string board[11];
-ll dir[4][2] = {{0,0},{1,0},{0,1},{1,1}};
+ll dir[4][2];
 ll h,w;
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    dir[0][0] = dir[1][0] = dir[2][1] = dir[3][1] = 0;
+    dir[0][1] = dir[2][0] = 1;
+    dir[1][1] = dir[3][0] = -1
     cin >> h >> w;
     rep(i, h){
         cin >> board[i];
