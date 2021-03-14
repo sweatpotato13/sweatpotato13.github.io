@@ -1,0 +1,58 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 195 A번 Health M Death"
+date: "2021-03-14 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 195 A번 Health M Death
+### 문제
+
+https://atcoder.jp/contests/abc195/tasks/abc195_a
+![abc195_a](https://i.imgur.com/FfbQuFD.png)
+  
+  
+### 풀이
+
+H가 M의 배수인지 아닌지 확인하면 되는 문제
+
+나머지가 0이면 Yes 아니면 No 출력
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc195/tasks/abc195_a
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll m,h;
+    cin >> m >> h;
+    bool isAnswer = false;
+    if(h % m == 0){
+        isAnswer = true;
+    }
+    else isAnswer = false;
+    if(isAnswer) cout << "Yes";
+    else cout << "No";
+
+    return 0;
+}
+```

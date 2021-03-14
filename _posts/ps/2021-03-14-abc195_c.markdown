@@ -1,0 +1,66 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 195 C번 Comma"
+date: "2021-03-14 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 195 C번 Comma
+### 문제
+
+https://atcoder.jp/contests/abc195/tasks/abc195_c
+![abc195_c](https://i.imgur.com/5x25cAK.png)
+  
+  
+### 풀이
+
+N보다 낮은 자리수의 컴마의 갯수를 싹다 더하고 
+
+N과 같은 자리수에 컴마의 갯수를 더해주는 방법으로 구현했다.
+
+근데 N <= 10^15 이므로 이걸 for문을 N번돌면서 하면 안된다...
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc195/tasks/abc195_c
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    ll ans = 0;
+    ll temp = 0;
+    for(int i = 0;temp <= n;i++){
+        ll prevTemp = temp;
+        temp = temp * 10 + 9;
+        if(temp <= n){
+            ans += (i/3) * (temp - prevTemp);
+        }
+        else{
+            ans += (i/3) * (n - prevTemp);
+        }
+    }
+    cout << ans;
+
+    return 0;
+}
+```

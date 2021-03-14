@@ -1,0 +1,67 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 195 B번 Many Oranges"
+date: "2021-03-14 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 195 B번 Many Oranges
+### 문제
+
+https://atcoder.jp/contests/abc195/tasks/abc195_b
+![abc195_b](https://i.imgur.com/2vKThO5.png)
+  
+  
+### 풀이
+
+오렌지의 합이 총 W 킬로그램이어야 한다고 할 떄, 오렌지가 N개 필요하다고 가정한다면
+
+AN <= 1000W <= BN 이 성립한다면 오렌지 N개를 사용해서 W 킬로그램을 정확하게 맞출 수 있을것이다.
+
+또한 그 N의 최소, 최대값은 오렌지의 무게의 범위인 A, B 그램으로 나누면 나올것이다.
+
+그 최소, 최대값이 AN <= 1000W <= BN의 범위에 포함이 되는지 안되는지 확인하고 포함되면 해당 최소, 최대값을 그대로 출력
+
+범위를 벗어난다면 UNSATISFIABLE를 출력하면 정답
+
+### 코드
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc195/tasks/abc195_b
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll a, b, w;
+    cin >> a >> b >> w;
+    w *= 1000;
+    bool flag = true;
+    ll min = ceill((ld)w / b);
+    if (w / min < a) flag = false;
+    ll max = w / a;
+    if (w / max > b) flag = false;
+    if (flag)
+        cout << min << " " << max;
+    else
+        cout << "UNSATISFIABLE";
+
+    return 0;
+}
+```
