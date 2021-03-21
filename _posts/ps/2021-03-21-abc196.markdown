@@ -1,0 +1,151 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 196"
+date: "2021-03-14 20:30:00 +0900"
+categories: [ps]
+tags: [atcoder, algorithm]
+use_math: true
+---
+
+# AtCoder Beginner Contest 196
+## 결과
+
+![submission](https://i.imgur.com/xANl0tp.png)
+![rating](https://i.imgur.com/0eOBMb3.png)
+
+Rating : 616 -> 701 (+85)
+
+  
+## 풀이
+
+<details markdown="1">
+<summary>A</summary>
+
+### A - Difference Max 
+
+a <= x <= b 이고 c <= y <= d 일때 x-y의 최대값을 찾아야 하므로 b - c 를 출력하면 된다.
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc196/tasks/abc196_a
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll a,b,c,d;
+    cin >> a >> b >> c >> d;
+    cout << b - c;
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>B</summary>
+
+### B - Round Down
+
+소수를 입력받아 소수점 이하를 버리고 정수부분만 출력하는 문제
+
+본인은 string으로 받아서 다시 출력하다가 소수점이 나오면 종료하는 방법으로 구현하였다.
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc196/tasks/abc196_b
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    string s;
+    cin >> s;
+    for(auto k : s){
+        if(k == '.') break;
+        cout << k;
+    }
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>C</summary>
+
+### C - Doubled
+
+1부터 N까지의 수 중 짝수자리이고 앞의 절반과 뒤의 절반의 수가 동일한 수는 몇개가 있는지 찾는 문제
+
+1부터 하나씩 증가해 가면서 해당 수를 두번 반복햇을 때 그 수가 N보다 작으면 계속 진행한다.
+
+그렇게 N보다 커질때까지 계속 수행하면 조건에 맞는 모든 수의 갯수를 찾을 수 있다.
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc196/tasks/abc196_c
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    ll ans = 0;
+    for(int i = 1;;i++){
+        string str = to_string(i);
+        str += str;
+        ll temp = stol(str);
+        if(temp <= n) ans++;
+        else break;    
+    }
+    cout << ans;
+
+    return 0;
+}
+```
+
+</details>
+
