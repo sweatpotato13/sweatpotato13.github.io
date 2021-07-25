@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 187 D번 Choose Me"
 date: "2021-01-14 20:30:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 187 D번 Choose Me

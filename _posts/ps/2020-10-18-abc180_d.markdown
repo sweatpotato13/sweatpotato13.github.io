@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 180 D번 Takahashi Unevolved"
 date: "2020-10-18 23:32:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 180 D번 Takahashi Unevolved

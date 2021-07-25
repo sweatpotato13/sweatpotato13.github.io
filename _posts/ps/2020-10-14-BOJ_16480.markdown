@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] 백준 16480번 외심과 내심은 사랑입니다"
 date: "2020-10-14 08:12:44 +0900"
-categories: [ps]
-tags: [boj, algorithm]
+tags: [ps]
 ---
 
 # 백준 16480번 외심과 내심은 사랑입니다

@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] HHKB Programming Contest 2020 C번 Neq Min"
 date: "2020-10-11 01:00:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
+tags: [ps]
 ---
 
 # HHKB Programming Contest 2020 C번 Neq Min

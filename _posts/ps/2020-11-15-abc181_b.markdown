@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 181 B번 Trapezoid Sum"
 date: "2020-11-15 11:05:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 181 B번 Trapezoid Sum
