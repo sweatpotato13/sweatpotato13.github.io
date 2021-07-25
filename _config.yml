@@ -1,9 +1,9 @@
 # Setup
 title:               CuteWisp
-tagline:             'A Jekyll theme'
+tagline:             ''
 description:         'CuteWisp'
-url:                 http://blog.cutewisp.com/
-baseurl:             'http://blog.cutewisp.com/'
+url:                 
+baseurl:             ''
 paginate:            5
 permalink:           pretty
 

@@ -2,6 +2,7 @@
 _gh_pages
 _site
 .ruby-version
+.sass-cache
 .jekyll-cache
 
 # Numerous always-ignore extensions
@@ -40,4 +41,3 @@ validation-report.json
 
 # Folders to ignore
 node_modules
-bower_components
