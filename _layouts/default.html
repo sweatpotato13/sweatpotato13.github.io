@@ -1,181 +1,31 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  
-<head>
-{% include head.html %}
-{% if page.use_math %}
-  {% include mathjax_support.html %}
-{% endif %}
-</head>
-<body>
 
-<section class="hero is-dark">
-  <div class="hero-body">
-    <div class="container">
-        <h1 class="title">
-          <span class="typewrite" data-period="2000" data-type='[ "hello", "namaste", "assalam o alaikum",
-          "sat srī akāl", "khammaghani", "hola", "bonjour", "nomoskaar", "guten tag", "kumusta", "salut", "nômoshkar"]'>
-            <span class="wrap"></span>
-          </span>
-        </h1>
-      <h4 class="subtitle" id="quote">
-      </h4>
-    </div>
-  </div>
-</section>
+  {% include head.html %}
 
-<div class="main-container">
-  <div class="tile is-ancestor is-vertical">
+  <body>
 
+    {% include sidebar.html %}
 
-    <nav class="nav has-shadow">
-
-      <div class="nav-left">
-
-        <a href="{{"/" | relative_url}}" class="nav-item">
-          <span class="icon">
-            <i class="fa fa-home" aria-hidden="true" title="Homepage"></i>
-          </span>
-        </a>
-
-        <a href="https://github.com/sweatpotato13" class="nav-item">
-          <span class="icon">
-            <i class="fa fa-github" aria-hidden="true" title="Github"></i>
-          </span>
-        </a>
-
-        <div class="nav-item" id="searchFieldNav">
-          <div class="field has-addons">
-            <p class="control">
-              <input class="input is-small" type="text" placeholder="Find an article" id="search-text">
-            </p>
-            <p class="control">
-              <a class="button is-dark is-small" onclick="searchHandler();">
-                Search
-              </a>
-            </p>
-          </div>
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="{{ site.baseurl }}/" title="Home">{{ site.title }}</a>
+            <small>{{ site.tagline }}</small>
+          </h3>
         </div>
-
       </div>
 
-      <div class="nav-right nav-menu" id='nav-menu'>
-        <a href="{{ "/archive" | relative_url }}" class="nav-item">Archive</a>
-        <a href="{{ "/tags" | relative_url }}" class="nav-item">Tags</a>
-      </div>
-
-      <span class="nav-toggle" id="nav-toggle">
-          <span></span>
-          <span></span>
-          <span></span>
-    </nav>
-
-    <div class="tile is-parent">
-      <div class="tile is-8 is-child main">
-
+      <div class="container content">
         {{ content }}
-
       </div>
-
-      <div class="tile is-4 is-child">
-        <div class="tile is-parent is-vertical sidebar">
-
-          <div class="tile is-child widget">
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title nice-title">
-                  Category
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content nice-text">
-                    <ul>
-                        {% assign pages_list = site.pages %}
-                        {% for node in pages_list %}
-                        {% if node.title != null %}
-                        {% if node.layout == "category" %}
-                        <li><a class="category-link {% if page.url == node.url %} active{% endif %}"
-                                href="{{ site.baseurl }}{{ node.url }}">{{ node.title }}</a></li>
-                        {% endif %}
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tile is-child widget">
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title nice-title">
-                  Recent Posts
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content nice-text">
-                  <ul>
-                  {% for post in site.posts limit:3 %}
-                  <li><a href="{{ post.url | relative_url }}">
-                    {{ post.title }}
-                  </a></li>
-                  {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tile is-child widget">
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title nice-title">
-                  Recommended Websites
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content nice-text">
-                  <ul>
-                    <li>
-                      <a href="https://github.com/sweatpotato13">Github</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
 
-  </div>
-</div>
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
 
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <p>
-        Some rights reserved.
-      </p>
-      <p>
-      </p>
-      <p>
-        <a class="icon" href="https://github.com/sweatpotato13">
-          <i class="fa fa-github" title="Github"></i>
-        </a>
-        <a class="icon" href="sweatpotato13@gmail.com">
-          <i class="fa fa-envelope" title="Email"></i>
-        </a>
-      </p>
-    </div>
-  </div>
-</footer>
-
-<!-- js -->
-<script src="{{ site.baseurl }}/assets/js/custom.js"></script>
-<script src="{{ site.baseurl }}/assets/js/typewriter.js"></script>
-</body>
+    <script src='{{ site.baseurl }}/public/js/script.js'></script>
+  </body>
 </html>
