@@ -2,9 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 188 B번 Orthogonality"
 date: "2021-01-17 20:30:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
-use_math: true
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 188 B번 Orthogonality

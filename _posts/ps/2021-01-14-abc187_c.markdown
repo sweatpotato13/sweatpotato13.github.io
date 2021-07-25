@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 187 C번 1-SAT"
 date: "2021-01-14 20:30:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 187 C번 1-SAT

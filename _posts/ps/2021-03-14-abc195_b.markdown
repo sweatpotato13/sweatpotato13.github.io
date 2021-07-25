@@ -2,9 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 195 B번 Many Oranges"
 date: "2021-03-14 20:30:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
-use_math: true
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 195 B번 Many Oranges

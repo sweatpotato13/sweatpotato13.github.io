@@ -2,9 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 190 B번 Magic 3"
 date: "2021-03-04 20:30:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
-use_math: true
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 190 B번 Magic 3

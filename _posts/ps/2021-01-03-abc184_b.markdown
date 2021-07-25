@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 184 B번 Quizzes"
 date: "2021-01-03 10:41:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 184 B번 Quizzes

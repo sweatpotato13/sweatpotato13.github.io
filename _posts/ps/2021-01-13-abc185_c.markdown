@@ -2,8 +2,7 @@
 layout: post
 title: "[C++] AtCoder Beginner Contest 185 C번 Duodecim Ferra"
 date: "2021-01-13 20:30:00 +0900"
-categories: [ps]
-tags: [atcoder, algorithm]
+tags: [ps]
 ---
 
 # AtCoder Beginner Contest 185 C번 Duodecim Ferra

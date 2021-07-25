@@ -2,8 +2,7 @@
 layout: post
 title: "code-server + Nginx + LetsEncrypt 구축하기"
 date: "2021-01-29 23:03:44 +0900"
-categories: [etc]
-tags: [Nginx, code-server, LetsEncrypt]
+tags: [tutorial]
 ---
 
 ![ss](https://i.imgur.com/ufweHkZ.png)
@@ -19,7 +18,7 @@ https://github.com/cdr/code-server
 
 본 문서에선 code-server + Nginx에 HTTPS까지 적용하는 방법을 설명해 보곘습니다.
 
-MacOS를 기준으로 설명 되었습니다.
+Mac OS를 기준으로 설명 되었습니다.
 
 ---
 
@@ -31,7 +30,7 @@ MacOS를 기준으로 설명 되었습니다.
 ```bash
 brew install code-server
 ```
-![ss](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/7d8c8cf0-2f0e-49e5-ad38-b287a719fad8/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210129%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210129T073244Z&X-Amz-Expires=86400&X-Amz-Signature=a51df9f4dee5c1da67a60509af8d5877bb722ce3e7b1c5766725e8bf37cc2d04&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+![ss](https://i.imgur.com/UtIRFqQ.png)
 
 
 brew가 설치되어 있지 않다면 brew를 먼저 설치해주세요 
@@ -60,7 +59,7 @@ brew services restart code-server
 ```
 
 변경된 설정을 반영하기위해 code-server를 재시작합니다.
-![ss](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/148c2a77-f83a-4a48-826e-ead6a2a2896a/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210129%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210129T073650Z&X-Amz-Expires=86400&X-Amz-Signature=f2e3e01b37c54ff1bf782c5c7ed400ef934f8c4ccb7f323887b9023711a4aa1b&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+![ss](https://i.imgur.com/MfIi3ob.png)
 
 <br>
 
@@ -68,7 +67,7 @@ brew services restart code-server
 ```
 http://localhost:8080
 ```
-![ss](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/a844dcfe-67dc-43f1-b8ab-5a47bfe1afc7/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210129%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210129T073817Z&X-Amz-Expires=86400&X-Amz-Signature=c3bb0d2d660388c7198966bdcfcdeb29be8bc800d901792d37ccd9e774136992&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+![ss](https://i.imgur.com/32R4Fpz.png)
 code-server의 기본포트는 8080 입니다.
 
 <br>
@@ -83,7 +82,7 @@ code-server는 기본적으로 https 연결을 권장하기 때문에 Nginx를 �
 ```
 brew install nginx
 ```
-![ss](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c2a34375-c582-46f9-8165-dce6fd0ad6d3/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210129%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210129T074033Z&X-Amz-Expires=86400&X-Amz-Signature=8d4d74f38cd82ca54eb44f7c3e74021f2f897db2882fefdb3bf46330370d3ad4&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+![ss](https://i.imgur.com/Bpgytjw.png)
 
 <br>
 
