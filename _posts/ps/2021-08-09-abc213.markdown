@@ -1,0 +1,284 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 213"
+date: "2021-08-09 20:30:00 +0900"
+tags: [ps]
+---
+
+# AtCoder Beginner Contest 213
+## 결과
+
+![submission](https://i.imgur.com/hDLmgQJ.png)
+![rating](https://i.imgur.com/II0gCsm.png)
+
+Rating : 701 -> 740 (+39)
+  
+## 풀이
+
+<details markdown="1">
+<summary>A</summary>
+
+![a](https://i.imgur.com/LusSZox.png)
+
+### A - Bitwise Exclusive Or 
+
+정수 A,B 가 있을 때 A ^ C = B 가 되는 C를 구하는 문제
+
+양변에 A를 xor 해주면 A ^ B = C 가 되므로 이를 출력하면 정답
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc213/tasks/abc213_a
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll a,b;
+    cin >> a >> b;
+    ll ans = a ^ b;
+    cout << ans;
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>B</summary>
+
+![b](https://i.imgur.com/v2LOYSu.png)
+
+### B - Booby Prize
+
+N명의 플레이어 들이 A_i 만큼의 점수를 가지고 있고 낮은 점수가 높은 순위를 기록한다고 했을 때 
+
+뒤에서 2번째로 낮은 순위의 플레이어를 찾는 문제
+
+점수와 몇번째 플레이어인지를 vector에 기록한 뒤 이를 Sorting 하여 뒤에서 두번째값의 플레이어 번호를 출력하면 정답
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc213/tasks/abc213_b
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    vector<pair<ll,ll>> v;
+    rep(i,n){
+        ll a;
+        cin >> a;
+        v.push_back({a,i+1});
+    }
+    sort(all(v));
+    for(ll i = 0;i<n;i++){
+        if(i == n-2){
+            cout << v[i].second;
+        }
+    }
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>C</summary>
+
+![c](https://i.imgur.com/TlMtvCq.png)
+
+### C - Reorder Cards
+
+높이 H, 너비 W의 행렬이 있을 때 (A_i, B_i)의 위치에 정수 i가 쓰여져 있다.
+
+아무것도 쓰여있지 않은 행과 열은 지워진다고 했을 때 마지막 행렬에서의 i가 쓰여있는 좌표를 순서대로 출력하는 문
+
+HW 크기의 행렬을 모두 검사하여 체크하기엔 H,W 값이 10^9승 까지이기 때문에 당연히 TLE가 발생한다.
+
+문제를 잘 살펴보면 입력받은 각각의 A_i, B_i 배열에서 오름차순으로 배열했을때 순서를 출력한다고 보면 된다.
+
+즉 (A_i, B_i) 입력이 다음과 같이 주어졌을 때
+```bash
+2 4
+5 6
+3 4
+```
+
+출력은 다음과 같다
+```bash
+1 1
+3 2
+2 1
+```
+
+자세한 풀이는 아래 코드를 참고
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc213/tasks/abc213_c
+bool sortbysec(const tl3& a, const tl3& b) { return (get<1>(a) < get<1>(b)); }
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll h, w, n;
+    cin >> h >> w >> n;
+    vector<tl3> a;
+    vector<tl3> b;
+    for (ll i = 1; i <= n; i++) {
+        ll ta, tb;
+        cin >> ta >> tb;
+        a.push_back(make_tuple(ta, i, 0));
+        b.push_back(make_tuple(tb, i, 0));
+    }
+    sort(all(a));
+    sort(all(b));
+    ll rep = 0;
+    for(ll i = 0;i<n;i++) {
+        if(i == 0) a[i] = make_tuple(get<0>(a[i]), get<1>(a[i]), i+1);
+        else if(i != 0 && get<0>(a[i]) == get<0>(a[i-1])) {
+            a[i] = make_tuple(get<0>(a[i]), get<1>(a[i]), get<2>(a[i-1]));
+            rep++;
+        }
+        else a[i] = make_tuple(get<0>(a[i]), get<1>(a[i]), i+1-rep);  
+    }
+    rep = 0;
+    for(ll i = 0;i<n;i++) {
+        if(i == 0) b[i] = make_tuple(get<0>(b[i]), get<1>(b[i]), i+1);
+        else if(i != 0 && get<0>(b[i]) == get<0>(b[i-1])) {
+            b[i] = make_tuple(get<0>(b[i]), get<1>(b[i]), get<2>(b[i-1]));
+            rep++;
+        }
+        else b[i] = make_tuple(get<0>(b[i]), get<1>(b[i]), i+1-rep);  
+    }
+    sort(all(a), sortbysec);
+    sort(all(b), sortbysec);
+    rep(i, n) { cout << get<2>(a[i]) << " " << get<2>(b[i]) << "\n"; }
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>D</summary>
+
+![d](https://i.imgur.com/mMjgkvc.png)
+
+### D - Takahashi Tour
+
+N개의 도시가 있으며 N-1개의 경로를 입력받는다.
+
+타카하시가 도시 1에서부터 출발할 때 아래와 같은 규칙으로 출력이 발생한다.
+
+* 타카하시가 현재 위치한 도시에서 바로 접근할 수 있는 도시 중 방문하지 않은 도시가 있다면 작은 숫자의 도시부터 방문
+* 그렇지 않으면 , 타카하시가 현재 위치한 도시가 1이라면 끝
+* 1이 아니라면 이전에 있던 도시로 되돌아옴
+
+위 조건은 평범한 DFS임을 알 수 있다. 하지만 입력받은 경로를 sorting하는 과정이 필요하다.
+
+자세한 해답은 아래 코드 참고
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc213/tasks/abc213_d
+vll path[202020];
+bool isVisited[202020] = {0};
+void dfs(ll start) {
+    isVisited[start] = true;
+    cout << start << " ";
+    for (auto k : path[start]) {
+        if (!isVisited[k]) {
+            isVisited[k] = true;
+            dfs(k);
+            cout << start << " ";
+        }
+    }
+}
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    rep(i, n - 1) {
+        ll a, b;
+        cin >> a >> b;
+        path[a].push_back(b);
+        path[b].push_back(a);
+    }
+    for (ll i = 0; i <= n; i++) {
+        sort(all(path[i]));
+    }
+    dfs(1);
+
+    return 0;
+}
+```
+
+</details>
+
