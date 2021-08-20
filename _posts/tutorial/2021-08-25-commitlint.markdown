@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Husky + Github Action + commitlint을 사용하여 commit message 관리하기"
-date: "2021-08-25 23:03:44 +0900"
+date: "2021-08-16 23:03:44 +0900"
 tags: [tutorial]
 ---
 

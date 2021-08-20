@@ -1,0 +1,233 @@
+---
+layout: post
+title: "[C++] Codeforces Round #739 (Div. 3)"
+date: "2021-08-19 20:30:00 +0900"
+tags: [ps]
+---
+
+# Codeforces Round #739 (Div. 3)
+## 결과
+
+![submission](https://i.imgur.com/FTR3W90.png)
+![rating](https://i.imgur.com/1L2C3oZ.png)
+
+Rating : 1272 -> 1239 (-33)
+
+  
+## 풀이
+
+<details markdown="1">
+<summary>A</summary>
+
+![a](https://i.imgur.com/8NzHoTo.png)
+
+### A - Dislike of Threes 
+
+3의 배수 혹은 마지막 자리 수가 3인 수를 제외한 수 중 k번째 수가 어떤 수 인지 출력하는 문제
+
+k가 최대 1000으로 수가 작기 떄문에 1000번째 수 까지 모든 경우를 저장하고 있다가 출력하면 정답
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://codeforces.com/contest/1560/problem/0
+bool is_pass(ll n){
+    if(n % 3 == 0) return true;
+    if(n % 10 == 3) return true;
+    return false;
+}
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    ll a[1001] = {0};
+    a[1] = 1;
+    for(int i = 2;i<=1000;i++){
+        ll val = a[i-1];
+        val++;
+        while(is_pass(val)) val++;
+        a[i] = val;
+    }
+    tc(n){
+        ll x;
+        cin >> x;
+        cout << a[x] << "\n";
+    }
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>B</summary>
+
+![b](https://i.imgur.com/8w8juUm.png)
+
+### B - Who's Opposite?
+
+a,b,c 세 정수를 입력으로 받는다. a와 b는 원탁에서 정 반대의 위치에 있다고 할 때 c의 정 반대의 위치에 있는 수가 무엇인지 찾는 문제
+
+우선 a와 b사이에 몇개의 수가 존재하는지 구한다. 그것을 토대로 원탁에 최대 몇 까지의 수가 있는지 구한다.
+
+그렇게 되면 자연스럽게 c의 반대쪽에 있는 수를 알 수 있다.
+
+하지만 답을 구할 수 없는 경우가 있는데 
+
+```
+        ll s = max(a, b);
+        ll e = min(a, b);
+        ll dif = s - e - 1;
+        ll end = s + dif - e + 1;
+```
+를 토대로 a와 b사이의 수 dif개가 있고 원탁에 있는 최대 수는 end 라고 했을 떄 만약 end가 a혹은 b보다 크다면 그것은 답이 존재하지 않는다.
+
+혹은 c가 end 보다 크면 c는 원탁에 존재할 수 없는 수 이므로 그 경우 또한 답이 존재하지 않는다.
+
+그리고 a와 b사이에 수가 dif개가 있는데 어떤 경우라도 1이 들어갈 자리가 없다면 그 경우도 답이 존재하지 않는다.
+
+이러한 경우를 제외한 모든 경우에는 답이 존재하게 된다.
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://codeforces.com/contest/1560/problem/B
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    tc(n) {
+        ll a, b, c;
+        cin >> a >> b >> c;
+        ll s = max(a, b);
+        ll e = min(a, b);
+        ll dif = s - e - 1;
+        ll end = s + dif - e + 1;
+        if (end < s || end < e || end < c) {
+            cout << -1 << "\n";
+            continue;
+        }
+        if ((e + dif + 1) % end != s % end) {
+            cout << -1 << "\n";
+            continue;
+        }
+        ll ans = (c + end / 2) % end;
+        if (ans == 0) ans = end;
+        cout << ans << "\n";
+    }
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>C</summary>
+
+![c](https://i.imgur.com/nT20dUH.png)
+
+### C - Infinity Table
+
+2차원 행렬에서 정수가 일정한 패턴대로 작성되어 있다. 그럼 x는 해당 행렬에 어느 좌표에 있을지를 구하는 문제
+
+해당 규칙은 간단한 규칙이므로 쉽게 눈에 보일 것이다.
+
+(1,1) -> (1,2) -> (2,2) -> (2,1) -> (1,3) -> .... 과 같은 순서로 진행된다.
+
+정해진 규칙대로 입력받은 수가 있는 좌표를 구하면 정답
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://codeforces.com/contest/1560/problem/C
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    ll a[31624] = {0};
+    a[1] = 1;
+    a[2] = 2;
+    a[3] = 5;
+    ll add = 5;
+    for (int i = 4; i < 31624; i++) {
+        a[i] = a[i - 1] + add;
+        add += 2;
+    }
+    tc(n) {
+        ll x;
+        cin >> x;
+        if (x == 1) {
+            cout << "1 1\n";
+            continue;
+        }
+        ll start = 0;
+        for (int i = 1;; i++) {
+            if (a[i] <= x && a[i + 1] > x) {
+                start = i;
+                break;
+            }
+        }
+        if (x < a[start] + start - 1) {
+            cout << x - a[start] + 1 << " " << start << "\n";
+        } else if (x == a[start] + start - 1) {
+            cout << start << " " << start << "\n";
+        } else {
+            cout << start << " " << start - x + a[start] + start - 1 << "\n";
+        }
+    }
+
+    return 0;
+}
+```
+
+</details>
