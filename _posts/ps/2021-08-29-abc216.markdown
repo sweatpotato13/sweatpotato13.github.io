@@ -1,0 +1,195 @@
+---
+layout: post
+title: "[C++] AtCoder Beginner Contest 216"
+date: "2021-08-29 20:30:00 +0900"
+tags: [ps]
+---
+
+# AtCoder Beginner Contest 216
+## 결과
+
+![submission](https://i.imgur.com/AjaybWu.png)
+![rating](https://i.imgur.com/3uiiyeW.png)
+
+아직 공식 반영이 되지 않아서 ac-predictor에서 가져왔습니다.
+
+Rating : 740 -> 717 (-23)
+  
+## 풀이
+
+<details markdown="1">
+<summary>A</summary>
+
+![a](https://i.imgur.com/R6ViETz.png)
+
+### A - Signed Difficulty 
+
+X.Y 를 입력받고 주어진 조건에 따라 출력만 하면 된다.
+
+* Y가 2 이하일 때 X-
+
+* Y가 3 이상 6 이하일 때 X
+
+* Y가 7 이상 9 이하일 때 X+
+
+어짜피 Y는 한자리 수로 고정이므로 10을 곱해서 처리했다.
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc216/tasks/abc216_a
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ld t;
+    cin >> t;
+    ll tt = (ll)(t * 10);
+    ll x = tt / 10;
+    ll y = tt % 10;
+    if (y <= 2)
+        cout << x << "-";
+    else if (y <= 6)
+        cout << x;
+    else
+        cout << x << "+";
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>B</summary>
+
+![b](https://i.imgur.com/ki66LMe.png)
+
+### B - Same Name
+
+성과 이름이 n개 주어진다. 여기서 같은 이름이 존재하면 `Yes` 아니면 `No`를 출력하는 문제
+
+이름을 붙여서 정렬하여 같은것이 있나 확인하여 풀었다. 
+
+정렬한 뒤 동일한 이름이면 붙어있을 것이기 때문에 그것만 체크해 주었다.
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc216/tasks/abc216_b
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    vector<string> s(n);
+    vector<string> t(n);
+    vector<string> name(n);
+    rep(i, n) {
+        cin >> s[i] >> t[i];
+        name[i] = s[i] + " " + t[i];
+    }
+    sort(all(name));
+    for (int i = 1; i < n; i++) {
+        if (name[i] == name[i - 1]) {
+            cout << "Yes";
+            return 0;
+        }
+    }
+    cout << "No";
+
+    return 0;
+}
+```
+
+</details>
+
+<details markdown="1">
+<summary>C</summary>
+
+![c](https://i.imgur.com/GWXa0CX.png)
+
+### C - Many Balls
+
+Spell A, B가 있는데 A는 가진 공 수에 하나를 더하는 것이고 B는 가진 공 수를 두배로 만든다.
+
+이러한 스펠을 사용해서 공을 n개 만들려고 할 떄 스펠을 사용한 순서대로 작성하는 문제
+
+저는 역으로 n에서 시작해서 2로 나뉘어지면 B, 아니면 A로 해서 0까지 만든 뒤 뒤집어 출력하는 방법을 사용하였습니다.
+
+최대 Spell 사용 갯수가 120으로 제한되어 있지만 10^18을 해도 정답은 길지 않기 때문에 무난하게 풀었습니다. 
+
+```cpp
+#pragma warning(disable : 4996)
+#include <bits/stdc++.h>
+#define all(x) (x).begin(), (x).end()
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef pair<ll, ll> pll;
+typedef pair<ld, ld> pld;
+typedef tuple<ll, ll, ll> tl3;
+#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))
+#define FORN(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))
+#define rep(i, n) FOR(i, 0, n)
+#define repn(i, n) FORN(i, 1, n)
+#define tc(t) while (t--)
+// https://atcoder.jp/contests/abc216/tasks/abc216_c
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ll n;
+    cin >> n;
+    vector<char> ans;
+    while (n) {
+        if (n % 2 == 0) {
+            n /= 2;
+            ans.push_back('B');
+        }
+        else{
+            n -= 1;
+            ans.push_back('A');
+        }
+    }
+    reverse(all(ans));
+    for(int i = 0;i<ans.size();i++){
+        cout << ans[i];
+    }
+
+    return 0;
+}
+```
+
+</details>
