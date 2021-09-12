@@ -1,0 +1,160 @@
+---
+layout: post
+title: "Lerna를 사용하여 Monorepo 사용해보기"
+date: "2021-09-12 13:03:44 +0900"
+tags: [tutorial]
+---
+
+# Monorepo & Lerna
+
+Created: September 12, 2021 9:30 AM
+Tags: Tools
+Updated: September 12, 2021 1:05 PM
+
+![Untitled](https://i.imgur.com/e4WLS5P.png)
+
+## About
+
+여러 레포지토리의 dependency를 관리하고 업데이트 하는 것은 시간이 오래 걸리고 또한 연동하는데 에러가 많이 발생할 수 있습니다. 그래서 관리 포인트를 여러 레포지토리에 두는 것이 아니라 하나의 레포지토리(`monorepo`) 에 둠으로써 관리하는 접근 방식을 사용하기 시작 하였습니다. 
+
+이렇게 `monorepo`구조를 사용함으로써 얻는 장점은 아래와 같습니다.
+
+- 하나의 레포지토리 내에서 관리 되기 때문에 구조적으로 단순함
+- 여러 프로젝트를 하나의 레포지토리에서 관리하기 때문에 종속성에 대한 관리도 통일하여 진행할 수 있어 종속성 관리에 편함
+- 종속성간 관계를 학습하는 것이 `multi-repo`구조보다 적어지기 때문에 새로운 개발자가 on-boarding 하는것이 편함
+
+본 문서에서는 Lerna를 사용하여 `monorepo` 를 구성하는 방법을 소개합니다.
+
+## Lerna
+
+### Lerna 설치
+
+```bash
+yarn global add lerna
+```
+
+Lerna를 설치해 줍니다.  아래 명령어로 설치를 확인합니다.
+
+```bash
+lerna --version
+```
+
+### 프로젝트 생성
+
+`monorepo` 로 사용 될 폴더를 만들고 그 안에서 `lerna init` 을 실행하여 초기 구성 파일을 생성합니다.
+
+```bash
+mkdir lerna-tutorial
+cd lerna-tutorial
+lerna init
+```
+
+![https://i.imgur.com/7JrupTg.png](https://i.imgur.com/7JrupTg.png)
+
+정상적으로 구성이 완료되었다면 다음과 같은 폴더 구조를 갖게 됩니다.
+
+![https://i.imgur.com/HSL4Pyi.png](https://i.imgur.com/HSL4Pyi.png)
+
+여기서 `lerna.json` 파일을 약간 수정을 해줍니다.
+
+- npm client 로 yarn을 사용함
+- workspaces를 사용함
+- 버전관리는 각 패키지마다 독립적으로 진행함
+
+```bash
+{
+  "packages": [
+    "packages/*"
+  ],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "version": "independent"
+}
+```
+
+![https://i.imgur.com/bydKq9L.png](https://i.imgur.com/bydKq9L.png)
+
+`package.json` 에도 workspace 폴더를 알 수 있도록 아래 내용을 추가합니다.
+
+```bash
+"workspaces": [
+   "packages/*"
+],
+```
+
+![https://i.imgur.com/sWyUIUb.png](https://i.imgur.com/sWyUIUb.png)
+
+### Package 추가
+
+기본적으로 `lerna create <package명>` 을 사용하여 자동으로 패키지를 추가할 수 있습니다.
+
+```bash
+lerna create playground
+```
+
+![https://i.imgur.com/ID03lGC.png](https://i.imgur.com/ID03lGC.png)
+
+정상적으로 패키지가 추가되었다면 아래와 같이 package 폴더 내에 추가 됩니다.
+
+![Untitled](https://i.imgur.com/IS4Zl5q.png)
+
+### Typescript 설정
+
+여기서 이제 `monorepo` 상의 모든 패키지에서 typescript를 사용하기 위해서 typescript 종속성을 추가해 줍니다.  이를 위해 루트 폴더의 `package.json`의 다음과 같은 devDependencies 에 종속성을 추가해줍니다.
+
+```bash
+yarn add typescript -D
+yarn add @types/node -D
+yarn add ts-node -D
+```
+
+그리고 루트 폴더의 `package.json`의 scripts에 다음과 같은 스크립트를 추가합니다.
+
+```bash
+"start": "lerna run start"
+```
+
+`lerna run start` 는 `monorepo` 상의 모든 패키지에서 `yarn start` 가 실행되게 합니다.
+
+또한 각 패키지의 `package.json` 의 scripts에는 다음과 같은 스크립트를 추가하였습니다.
+
+```bash
+"start": "ts-node lib/playground.ts"
+```
+
+typescript를 사용하기 위해 루트 폴더와 각 패키지 폴더에 `tsconfig.json` 파일을 추가합니다.
+
+```bash
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "declaration": true,
+      "noImplicitAny": false,
+      "removeComments": true,
+      "noLib": false,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "target": "es6",
+      "sourceMap": true,
+      "lib": [
+        "es6"
+      ]
+    },
+    "exclude": [
+      "node_modules",
+      "**/*.spec.ts"
+    ]
+   }
+```
+
+또한 각 패키지 폴더에 js로 생성된 파일을 모두 ts로 변환해 줍니다. 모든 과정을 완료했다면 다음과 같은 폴더 구조를 갖습니다.
+
+![Untitled](https://i.imgur.com/Gbc9Qul.png)
+
+루트 폴더에서 `lerna run start` 를 실행하면 다음과 같은 결과를 얻게 됩니다.
+
+![Untitled](https://i.imgur.com/vSLudEm.png)
+
+## 마무리
+
+이 글에서 `lerna` 를 사용한 `monorepo` 프로젝트를 생성하는 법을 가볍게 소개하였습니다. 본 문서에서 소개한 명령어는 극히 일부일 뿐이고 더욱 자세한 내용는 [lerna git repository](https://github.com/lerna/lerna) 에서 더 자세한 정보를 얻을 수 있습니다.
