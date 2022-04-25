@@ -2,7 +2,7 @@
 layout: post
 title: Nest.js 튜토리얼 따라하기 7편
 date: "2021-08-15 22:31:35 +0900"
-tags: [nest.js]
+tags: [backend]
 ---
 
 # Nest.js 튜토리얼 따라하기 7편
