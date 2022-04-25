@@ -1,13 +1,20 @@
 - slug: ps
   name: PS
 
-- slug: nest.js
-  name: Nest.js
+- slug: backend
+  name: Backend
 
+- slug: frontend
+  name: Frontend
+
+- slug: blockchain
+  name: Blockchain
+
+- slug: aws
+  name: AWS
+  
 - slug: tutorial
   name: Tutorial
 
 - slug: etc
   name: Etc
-- slug: blockchain
-  name: blockchain
