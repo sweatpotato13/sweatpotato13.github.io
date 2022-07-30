@@ -2,11 +2,11 @@
 layout: post
 title: "ElasticSearch에 대하여"
 date: "2022-07-24 13:03:44 +0900"
-tags: [tutorial, backend]
+tags: [etc, backend]
 ---
 # ElasticSearch
 
-![https://i.imgur.com/bGFBxti.png](https://i.imgur.com/bGFBxti.png)
+![title](https://i.imgur.com/bGFBxti.png){: width="100%" height="100%"}
 
 # About
 
@@ -29,11 +29,11 @@ ELK 스택이란 다음과 같습니다.
 - **Kibana**
     - Elasticsearch의 빠른 검색을 통해 데이터를 시각화 및 모니터링
 
-![Untitled](https://i.imgur.com/Kon4H49.png)
+![ELK](https://i.imgur.com/Kon4H49.png){: width="100%" height="100%"}
 
 # Architecture
 
-![https://i.imgur.com/gex3jOG.png](https://i.imgur.com/gex3jOG.png)
+![Architecture](https://i.imgur.com/gex3jOG.png){: width="100%" height="100%"}
 
 - Cluster
     
