@@ -1,23 +1,23 @@
 # Setup
-title:               CuteWisp
-tagline:             ''
-description:         'CuteWisp'
-url:                 
-baseurl:             ''
-paginate:            5
-permalink:           pretty
-future:              true
+title: CuteWisp
+tagline: ""
+description: "CuteWisp"
+url: "https://blog.cutewisp.com"
+baseurl: ""
+paginate: 5
+permalink: pretty
+future: true
 
 # About/contact
 author:
-  name:              CuteWisp
-  url:               cutewisp.com
-  email:             sweatpotato13@gmail.com
+  name: CuteWisp
+  url: cutewisp.com
+  email: sweatpotato13@gmail.com
 
 # Gems
 plugins:
   - jekyll-paginate
 
 # Custom vars
-version:             1.1.0
+version: 1.1.0
 google_analytics_id: #UA-XXXX-Y
