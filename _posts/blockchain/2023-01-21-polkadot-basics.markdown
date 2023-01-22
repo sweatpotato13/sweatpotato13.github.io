@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Polkadot basics"
+title: "Polkadot 개념 정리 basics"
 date: "2023-01-21 13:03:44 +0900"
 tags: [blockchain]
 ---
