@@ -12,9 +12,12 @@
 
 - slug: aws
   name: AWS
-  
+
 - slug: tutorial
   name: Tutorial
 
 - slug: etc
   name: Etc
+
+- slug: zk
+  name: Zero-Knowledge
