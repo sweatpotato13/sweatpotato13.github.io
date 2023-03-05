@@ -7,7 +7,9 @@ tags: [zk]
 
 본 문서는 ZK Whiteboard Sessions - Module One을 보고 정리한 문서입니다. zk에 대한 이해가 완벽하지 않아서 잘못 이해하고 작성한 부분이 있을 수 있습니다.
 
-[https://www.youtube.com/watch?v=h-94UhJLeck](https://www.youtube.com/watch?v=h-94UhJLeck)
+[youtube](https://www.youtube.com/watch?v=h-94UhJLeck)
+
+[Google Slide](https://docs.google.com/presentation/d/1xrF2h9cvvav5ywUjtI37G2E1BROF70PIS9tnJPnYzyQ/edit#slide=id.g13ea2f20f32_0_0)
 
 ## Definition: SNARK
 
