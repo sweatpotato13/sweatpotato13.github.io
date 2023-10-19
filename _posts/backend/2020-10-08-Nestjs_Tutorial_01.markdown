@@ -1,15 +1,15 @@
 ---
 layout: post
-title: Nest.js 튜토리얼 따라하기 1편
+title: Nestjs 튜토리얼 따라하기 1편
 date: "2020-10-08 20:12:58 +0900"
 tags: [backend]
 ---
 
-# Nest.js 튜토리얼 따라하기 1편
+# Nestjs 튜토리얼 따라하기 1편
 
 https://docs.nestjs.com/
 
-Nest.js는 Node.js의 server-side를 구축하기 위한 프레임워크이다.
+Nestjs는 Node.js의 server-side를 구축하기 위한 프레임워크이다.
 <br/>
 <br/>
 
