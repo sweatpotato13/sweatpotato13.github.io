@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Nestjs에 SWC 컴파일러 적용하기
+title: "Nestjs에 SWC 컴파일러 적용하기"
 date: "2023-10-19 13:03:44 +0900"
 tags: [backend]
 ---
