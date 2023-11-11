@@ -1,0 +1,142 @@
+---
+layout: post
+title: "CRDT에 대해서"
+date: "2023-11-11 08:05:44 +0900"
+tags: [etc]
+---
+
+## Overview
+
+![topology](https://i.imgur.com/qCjg5dc.png)
+
+CRDT (Conflict free Replicated Data Types)는  중앙 서버의 개입 없이, 유저 간 컨센서스, 동기화 과정을 거치지 않고도 동일한 상태를 가질 수 있도록 하는 기술입니다. 
+
+기존에는 OT (Operational Transformation) 방식을 사용했습니다. 중앙 서버가 유저들의 작업 내용을 모두 받아 이를 적절하게 보정하여 모든 유저들의 상태를 동일하게 하였습니다. 하지만 유저 간 통신으로 동기화가 불가능 하기 때문에 중앙 서버에 과부하가 올 수 있다는 문제점이 있었습니다.
+
+## CRDT (Conflict free Replicated Data Types)
+
+![CRDT](https://i.imgur.com/qS4wE3F.png)
+
+CRDT는 두 가지 방식이 존재합니다. `State based CRDT`(상태 기반 CRDT)와 `Operation based CRDT`(작업 기반 CRDT) 입니다.
+
+### Eventual Consistency
+
+![EC](https://i.imgur.com/Exdd7qH.png)
+
+CRDT를 다루기 전에 먼저 `Eventual Consistency`에 대한 설명이 필요합니다.
+
+Eventual Consistency란 모든 복제본들에 대해서 새로운 상태 업데이트가 발생하지 않을때 동일한 값으로 수렴하는 것이 가능하다는 것입니다.
+
+Eventual Consistency를 만족하기 위해서 아래 3가지 조건이 필요합니다
+
+![EC](https://i.imgur.com/ejqnLgA.png)
+
+* Eventual Delivery: 어떤 복제본에 특정 method가 실행 되었다면 다른 복제본에서도 동일한 method가 실행 될 수 있습니다.
+
+* Convergence: 어떤 두 복제본이 동일한 method set을 가지고 수행되었다면 그 두 복제본은 같을 수 있습니다.
+
+* Termination: 모든 method는 정상적으로 실행 되어야 합니다.
+
+![EC limitation](https://i.imgur.com/kkW377L.png)
+
+Eventual Consistency를 만족하면 CRDT를 만족할 수 있느냐 라고 한다면 그렇지 않을 수 있습니다.
+
+Eventual Consistency 만으로는 동일한 상태를 만들 수 있다는 가능성만을 나타낼 뿐 이를 확실할 순 없습니다.
+
+### Strong Eventual Consistency
+
+그래서 조금 더 강력한 조건이 필요합니다. 이를 `Strong Eventual Consistency`라고 합니다.
+
+![SEC](https://i.imgur.com/PYROwfS.png)
+
+Strong Eventual Consistency는 Eventual Consistency에서 업데이트가 다른 순서대로 오더라도 동일한 상태가 된다는 내용입니다.
+
+![SEC](https://i.imgur.com/GCvs6cQ.png)
+
+이를 만족하기 위해서 Eventual Consistency를 만족하면서 아래 조건을 추가로 만족해야 합니다.
+
+* Strong Convergence: 어떤 두 복제본이 동일한 method set을 가지고 수행되었다면 그 두 복제본은 같은 상태를 가집니다.
+
+그래서 CRDT를 달성한다는 것은 SEC를 만족한다는 것과 같은 말이라고 할 수 있습니다.
+
+### State based CRDT
+
+![State based CRDT](https://i.imgur.com/ee4J9n8.png)
+
+State based CRDT는 복제본 간에 상태를 전달하여 모든 복제본의 상태를 일치시키는 방법입니다.
+
+State based CRDT에서 각 복제본은 아래의 튜플을 구성합니다.
+
+$(S, S^0, q, u, m)$
+
+$ S = State, S^0 = Initial \ State$ 
+
+$ q=Query, u=Update, m=Merge $
+
+#### Merge function
+
+State의 순서에 상관없이 모든 복제본이 동일한 상태로 수렴하게 하려면 Merge function이 매우 중요합니다.
+
+그러기 위해서 Merge function은 아래의 조건을 만족해야 합니다.
+
+![merge function](https://i.imgur.com/RJ2q2ja.png)
+
+* 교환법칙: 두 상태를 결합할 때 순서를 바꾸더라도 결과 값은 동일하다
+
+* 멱등법칙: 동일한 두 상태를 결합할 때 결합한 상태와 같은 값이 나와야 한다.
+
+* 결합법칙: 3개 이상의 상태에 대해서 결합을 하고자 할 때, 어떤 2개의 상태를 먼저 결합을 하더라도 결과 값은 동일하다.
+
+위의 3가지 조건을 만족하는 Merge function을 구성한다면 State based CRDT를 만족할 수 있게 됩니다.
+
+### Operation based CRDT
+
+![Operation based CRDT](https://i.imgur.com/pmn6TzU.png)
+
+Operation based CRDT는 복제본 간에 수행된 작업을 전달하여 모든 복제본의 상태를 일치시키는 방법입니다.
+
+State based CRDT에서 각 복제본은 아래의 튜플을 구성합니다.
+
+$(S, S^0, q, u, t m)$
+
+$ S = State, S^0 = Initial \ State$ 
+
+$ q=Query, t= prepare-update,  u=effect-update, m=Merge $
+
+State based CRDT에서 있던 Merge 가 사라지고 Update가 $(u,t)$ 쌍으로 구분 되었습니다.
+
+#### Commutativity
+
+![Commutativity1](https://i.imgur.com/pLirWHG.png)
+
+Operation based CRDT에서도 State based CRDT와 마찬가지로 순서에 상관없이 동일한 상태로 수렴할 수 있어야 합니다. 
+
+그러기 위해서 Update 연산에 대해서 순서를 바꾸더라도 동일한 결과값을 획득할 수 있어야 합니다.
+
+![Commutativity2](https://i.imgur.com/wz9Cx9S.png)
+
+위 사진에 보이는것 처럼 $\alpha$, $\beta$ 업데이트를 한다고 했을 때 순서를 바꿔서 업데이트를 수행하더라도 동일한 결과를 얻을 수 있어야 합니다.
+
+이를 만족하는 Update method를 구성한다면 Operation based CRDT를 만족할 수 있게 됩니다.
+
+## Sidetree?
+
+이전 포스팅에서 [Sidetree protocol](./2023-10-26-sidetree-protocol.markdown)에 대해서 다루었는데 Sidetree protocol에서 Sidetree node간 상태를 일치시키는데 CRDT를 사용하고 있습니다.
+
+그러면 Sidetree에서는 State based CRDT를 사용할까요? Operation based CRDT를 사용할까요?
+
+### Delta based CRDT
+
+State based CRDT는 모든 복제본에 상태값을 전달하게 되는데 상태값 전체를 전달하게 되면 전송하는 데이터의 사이즈가 굉장히 커질 수 있습니다.
+
+![more CRDT](https://i.imgur.com/Grny8S7.png)
+
+이를 보완하고자 변경 된 상태에 대해서만 다른 복제본으로 전달하는 `Delta based CRDT`가 파생 되었습니다.
+
+![Delta based CRDT](https://i.imgur.com/9tWnRWT.png)
+
+각 복제본은 전체 상태를 다른 복제본으로 전달하지 않고 변경된 상태에 대해서만 다른 복제본으로 전달하게 되고 그 이후 과정은 State based CRDT와 동일하게 수행됩니다.
+
+## Reference
+
+
