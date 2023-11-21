@@ -2,7 +2,7 @@
 layout: post
 title: "IPFS 서버에 커스텀 도메인 주소 사용하기"
 date: "2021-12-25 13:03:44 +0900"
-tags: [tutorial, blockchain]
+tags: [tutorial]
 ---
 
 ![Untitled](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtnOVLNcFMBoIoyca7IyYa866nbko7WXQlzg&usqp=CAU)

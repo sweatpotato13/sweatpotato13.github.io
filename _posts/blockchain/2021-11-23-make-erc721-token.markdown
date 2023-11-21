@@ -2,7 +2,7 @@
 layout: post
 title: "Truffle을 사용하여 ERC-721 토큰 배포하기"
 date: "2021-11-23 13:03:44 +0900"
-tags: [tutorial, blockchain]
+tags: [blockchain]
 ---
 
 ![Untitled](https://res.cloudinary.com/practicaldev/image/fetch/s--_fHAS3Uc--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jd23pnq93vw1fz9rlfks.png)
