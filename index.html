@@ -10,11 +10,11 @@ title: Home
       <a href="{{ post.url | relative_url }}"> {{ post.title }} </a>
     </h1>
 
-    <time datetime="{{ post.date | date_to_xmlschema }}" class="post-date"
-      >{{ post.date | date_to_string }}
-    </time>
+    {% include tag_collector.html tag_separator=',' %}
+    <span class="post-date">{{ post.date | date_to_string }} | {{ tag_list }}</span>
 
     {{ post.content }}
+    <hr>
   </article>
   {% endfor %}
 </div>
