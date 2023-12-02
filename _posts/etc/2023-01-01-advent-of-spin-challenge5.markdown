@@ -7,7 +7,7 @@ tags: [etc]
 
 이 포스트는 [advent-of-spin](https://github.com/fermyon/advent-of-spin)에 업로드 된 Challenge 4에 대해서 진행했던 내용을 정리한 포스트 입니다.
 
-Rust 언어로 진행하였으며 이 포스트에 게시된 소스코드는 [Github](https://github.com/sweatpotato13/advent-of-spin/tree/main/CHALLENGE-5) 에서 확인할 수 있습니다.
+Rust 언어로 진행하였으며 이 포스트에 게시된 소스코드는 [Github](https://github.com/sweatpotato13/advent-of-spin/tree/main/2023/CHALLENGE-5) 에서 확인할 수 있습니다.
 
 ## Spec
 
