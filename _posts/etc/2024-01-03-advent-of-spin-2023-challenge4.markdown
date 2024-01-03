@@ -31,6 +31,7 @@ Rust 언어로 진행하였으며 이 포스트에 게시된 소스코드는 [Gi
 - `src/lib.rs` 에  POST를 처리하기 위한 로직을 구현합니다.
 
     - 경우의 수가 많지 않아(0,1,2,3,4 만 사용) 모든 경우를 array에 넣고 모든 경우를 시도하는 방법으로 구현하였습니다.
+    
     ```rust
     use http::StatusCode;
     use serde::{Deserialize, Serialize};
