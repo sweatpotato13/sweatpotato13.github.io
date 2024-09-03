@@ -1,0 +1,265 @@
+---
+layout: post
+title: "RISC Zero과 친해지기: zkVM 이야기"
+date: "2024-09-02 09:35:56 +0900"
+tags: [zk]
+---
+
+# RISC Zero
+
+# Overview
+
+이 문서는 RISC Zero ([https://dev.risczero.com](https://dev.risczero.com/api)) 문서를 참고하여 실습 내용 및 관련 내용을 정리한 문서입니다.
+
+# Getting Started
+
+![image.png](/assets/post/risc0/image.png)
+
+위 그림은 RISC Zero를 사용하여 ZK 관련 로직을 사용하는 방법을 나타낸 그림입니다. 
+
+1. zkVM을 위한 어플리케이션을 만들고
+2. zkVM을 위한 Proof를 생성합니다.
+3. 위에서 만든 Proof를 검증할 수 있도록 Onchain 로직과 결합합니다.
+
+# Writing your zkVM Application
+
+## Installation
+
+### Install[​](https://dev.risczero.com/api/zkvm/install#install)
+
+`rzup` 은 RISC Zero 툴체인 설치파일 입니다. `cargo` 를 사용하여 별도로 설치할 수 있지만 `rzup` 을 사용하여 설치하는 것을 추천합니다.
+
+1. 아래 커맨드를 실행하여 `rzup` 을 설치합니다.
+    
+    ```bash
+    curl-L https://risczero.com/install | bash
+    
+    ```
+    
+2. `rzup` 명령어를 수행하여 RISC Zero를 설치합니다.
+    
+    ```bash
+    rzup
+    ```
+    
+
+![image.png](/assets/post/risc0/image%201.png)
+
+### Manual Installation[​](https://dev.risczero.com/api/zkvm/install#manual-installation)
+
+`cargo` 를 이용한 수동 설치는 아래 과정을 따릅니다.
+
+1. 아래 명령어를 수행하여 RISC Zero를 설치합니다.
+    
+    ```bash
+    # For ARM macOS
+    cargo install cargo-binstall
+    cargo binstall cargo-risczero
+    cargo risczero install 
+    ```
+    
+    ```bash
+    # For x86-64 macOS
+    cargo install cargo-binstall
+    cargo binstall cargo-risczero
+    cargo risczero build-toolchain
+    ```
+    
+- x86-64 macOS 의 경우 `cargo risczero install` 대신  `cargo risczero build-toolchain` 를 수행합니다.
+
+## Building zkVM Hello World
+
+### Step 1: Create a new project[​](https://dev.risczero.com/api/zkvm/tutorials/hello-world#step-1-create-a-new-project)
+
+`cargo-risczero` 를 사용하여 `hello-world` 라고 하는 새로운 프로젝트를 생성합니다. 또한 `cargo-risczero` 는 `—-guest-name` 옵션을 사용하여  guest 프로그램의 이름을 지정할 수 있습니다.
+
+```bash
+cargo risczero new hello-world --guest-name hello_guest
+cd hello-world
+```
+
+![image.png](/assets/post/risc0/image%202.png)
+
+프로젝트 폴더 내부에서`cargo run --release` 명령어를 실행하여 프로젝트를 빌드하고 실행할 수 있습니다.
+
+### **Step 2 (Host): Share private data as input with the guest**
+
+zkVM 혹은 prover는 Host에서 실행됩니다. host 코드는 `hello-world/host/src/main.rs` 에 위치합니다. Host는 prover를 구축하기 전에 `ExecutorEnv` 라고 하는 실행자 환경을 생성합니다.  Host는 실행 전 guest에게 `input` 값을 제공합니다. guest가 readable memory를 관리하는 실행자 환경에 `input` 을 추가하여 수행합니다. prover가 프로그램을 실행할 때 입력값에 접근할 수 있게 됩니다.
+
+```rust
+use risc0_zkvm::{default_prover, ExecutorEnv};
+
+fn main() {
+    let input:u32 = 7;
+    let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
+}
+```
+
+### **Step 3 (Guest): Read input and commit output**
+
+Guest code는 `methods/guest/src/main.rs` 에 있습니다. 이 코드는 증명될 코드의 일부 입니다. 아래 코드에서 guest는 host의 입력 값을 읽은 다음 receipt의 journal에 커밋합니다.
+
+- journal
+    - zkVM 어플리케이션의 public output 이 포함된 receipt의 일부.
+- receipt
+    - receipt 는 guest program의 유효한 실행을 증명합니다.  receipt는 receipt claim와 seal로 구성되어 있습니다. receipt claim은 journal과 기타 세부 정보가 포함되어 있으며 프로그램의 public output을 구성합니다. seal은 receipt claim의 유효성을 암호학적으로 증명하는 blob입니다.
+
+```rust
+use risc0_zkvm::guest::env;
+
+fn main() {
+    // read the input
+let input:u32 = env::read();
+
+    // do something with the input
+    // writing to the journal makes it public
+    env::commit(&input);
+}
+```
+
+`env::commit` 함수는 public results를 journal에 커밋합니다. 한번 journal에 커밋이 되면 receipt를 가진 누구나 이 값을 확인할 수 있습니다.
+
+### Step 4 (Host): Generate a receipt and read its journal contents[​](https://dev.risczero.com/api/zkvm/tutorials/hello-world#step-4-host-generate-a-receipt-and-read-its-journal-contents)
+
+Host가 receipt를 생성하고 journal의 컨텐츠를 추출하는 방법을 알아봅니다.
+
+실제 사용시에 우리는 receipt를 누군가로 부터 획득하여 이를 검증하려 할 것입니다. 그리고 `prove` 함수는 receipt의 내부 검증을 수행합니다. receipt에서 journal을 추출한 후 host에 `println` 한줄을 추가하여 stdout으로 이를 출력 할 수 있습니다.
+
+```rust
+use methods::{HELLO_GUEST_ELF, HELLO_GUEST_ID};
+use risc0_zkvm::{default_prover, ExecutorEnv};
+
+fn main() {
+let input:u32 = 15 *u32::pow(2, 27) + 1;
+let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
+
+    // Obtain the default prover.
+let prover = default_prover();
+
+    // Produce a receipt by proving the specified ELF binary.
+let receipt = prover.prove(env, HELLO_GUEST_ELF).unwrap().receipt;
+
+    // Extract journal of receipt
+let output:u32 = receipt.journal.decode().unwrap();
+
+    // Print, notice, after committing to a journal, the private input became public
+    println!("Hello, world! I generated a proof of guest execution! {} is a public output from journal ", output);
+}
+
+```
+
+![image.png](/assets/post/risc0/image%203.png)
+
+## Understanding I/O in the zkVM
+
+### Setting the Stage[​](https://dev.risczero.com/api/zkvm/tutorials/io#setting-the-stage)
+
+zkVM에서 프로그래밍 하는 것은 host 와 guest, 두 세계간의 데이터를 이동시키는 것 이라고 생각할 수 있습니다. Host는 일반 프로그램과 같이 계산이 수행되고 Guest에서는 zk환경에서의 계산이 수행됩니다.
+
+guest가 zk환경에서 작동하므로 host와 비교했을 때 제한적인 방법으로 데이터를 획득할 수 있습니다.  Host 와 guest간 데이터를 보내는 유일한 방법은 `Executor Environment` 를 통하는 것 입니다. 이러한 데이터 전송은 file descriptors를 통해 이루어 지는데 zkVM에서는  [`stdin`](https://docs.rs/risc0-zkvm/1.0/risc0_zkvm/guest/env/fn.stdin.html), [`stdout`](https://docs.rs/risc0-zkvm/1.0/risc0_zkvm/guest/env/fn.stdout.html), [`stderr`](https://docs.rs/risc0-zkvm/1.0/risc0_zkvm/guest/env/fn.stderr.html), ,[`journal`](https://docs.rs/risc0-zkvm/1.0/risc0_zkvm/guest/env/fn.journal.html) 의 4가지 가 존재합니다.
+
+### The zkVM Data Model[​](https://dev.risczero.com/api/zkvm/tutorials/io#the-zkvm-data-model)
+
+zkVM은 public data / private data 의 데이터 모델을 가지고 있습니다. “Public” 의 의미는 journal 에 포함되어 Proof의 일부가 되는 것을 의미하며 “Private”는 host와 guest만 접근 가능 합니다.
+
+## **Sending data from the host to the guest**
+
+`stdin` file descriptor 는 host에서 guest로 Input data를 보내는데 사용됩니다. Host에서 `write`, `write_slice` 메소드를 사용하여 Executor Environment에 데이터를 설정하는 것이 가능합니다. Guest는 이에 대응되는 `read` 및 `read_slice` 메소드를 통해 이를 읽을 수 있습니다.
+
+```rust
+use risc0_zkvm::ExecutorEnv;
+
+let input = "Hello, guest!";
+let env = ExecutorEnv::builder().write(&input)?.build()?;
+```
+
+### **Sending *Private* data from the guest**
+
+`stdout` ,`stderr` 모두 guest 에서 host로 private data를 보내는데 사용되며 `write` 메소드를 통해 host의 `stdout` 으로 보내는 방법이 간단한 방법입니다.
+
+```rust
+let data = "Hello, host!";
+env::write(&data);
+```
+
+### Sending *Public* data from the guest[​](https://dev.risczero.com/api/zkvm/tutorials/io#sending-public-data-from-the-guest)
+
+공개하기 위한 데이터를 전송하기 위해 `journal` 으로 보내는 방법이 있습니다. 이는 `commit` , `commit_slice` 메소드를 통해 `journal`에 쓰기가 가능하며 이를 수행하면 Proof에 포함되며 Receipt를 통해 데이터에 접근할 수 있습니다.
+
+```rust
+let data = "Hello, journal!";
+env::commit(&data);
+```
+
+### **Reading *Private* data in the host**
+
+Guest에서 데이터를 보낸 후 `from_slice` 메소드를 활용하여 host에서 읽을 수 있습니다. 
+
+```rust
+let result: Type = from_slice(&output)?;
+```
+
+### **Reading *Public* data in the host**
+
+Public data를 읽는 것은 증명 과정 이후 `Receipt` 에 접근하는 것으로 읽을 수 있습니다. `journal` 인스턴스의 `decode` 메소드를 통해 가능합니다.
+
+```rust
+// Produce a receipt by proving the specified ELF binary.
+let receipt = prover.prove(env, ELF).unwrap().receipt;
+// Decode the journal to access the public data.
+let public_data = receipt.journal.decode()?;
+```
+
+### **Sharing data structures between host and guest**
+
+Host 와 guest 사이 공통 데이터 구조를 공유하는 방법은 core 모듈을 포함하는 공통 데이터 구조를 포함하는 것 입니다. 
+
+[JWT Validator](https://github.com/risc0/risc0/blob/release-1.0/examples/jwt-validator/README.md) 가 좋은 예시입니다.
+
+## Proof Composition
+
+### **Start Building**
+
+proof composition 를 사용하기 위해 host에서 `add_assumption()` 함수를 호출하고 `env::verify()` 를 guest에서 호출합니다.
+
+### How It Works
+
+proof composition은 `ReceiptClaim`구조체에 *assumptions*을 추가하고, *assumptions을* resolveing 하는 것으로 동작합니다.
+
+![image.png](/assets/post/risc0/image%204.png)
+
+**Adding Assumptions**
+
+`env::verify()` 가 guest 프로그램 내부에서 호출 되면 assumption이 `ReceiptClaim` 에 추가됩니다.
+
+![image.png](/assets/post/risc0/image%205.png)
+
+**Resolve an Assumption**
+
+proof composition 를 해결하기 위해서 assumptions이 resolve 되어야 합니다.  이는 `resolve` 를 통해 수행됩니다. 이는 유저가 `Prover::prove_with_opts` 를 호출할 때 자동으로 호출 됩니다.
+
+![image.png](/assets/post/risc0/image%206.png)
+
+# Generating Proofs for your zkVM Application
+
+## Proving Options
+
+사용자는 Proof를 생성하기 위해 여러 옵션을 선택할 수 있습니다.
+
+- dev-mode: 실제 Proof이 생성되지 않음, 프로토타이핑을 위함
+- local proving: 유저의 CPU, GPU를 사용하여 Proof를 생성
+- remote proving: Bonsai를 통해서 Proof를 생성
+
+## Dev mode
+
+risc0 프로젝트는 `RISC0_DEV_MODE` 환경 변수를 설정하여 개발 모드에서 실행되게 할 수 있습니다. 이는 fake receipt creation, pass-through 'verification’ 를 지원히기 때문에 실제 개발 과정에 영향을 주지 않으면서 개발이 가능하게 합니다. receipts가 개발 모드에서 생성될 때도 `journal` 에 public outputs이 포함되어 있습니다.
+
+하지만 Proving 과정이 우회되기 때문에 개발 모드에서 실행하여 획득한 `recepit` 는 실제 모드에서는 동작하지 않습니다.
+
+## Local Proving
+
+사용자는 zkVM을 로컬로 실행하여 자체 하드웨어를 통해 Proof를 생성할 수 있습니다. Feature flags 를 통해 CPU 및 GPU를 사용하게 할 수 있습니다.
+
+## Remote Proving
+
+Bonsai는 사용자가 Proof 생성에 자체 하드웨어를 사용하지 않고도 zkVM 애플리케이션에 대한 Proof를 생성할 수 있도록 합니다. 사용자는 실행하려는 zkVM 애플리케이션과 해당 프로그램의 입력을 지정하고 Bonsai는 Proof를 반환합니다.
