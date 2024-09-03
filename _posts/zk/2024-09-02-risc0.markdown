@@ -13,7 +13,7 @@ tags: [zk]
 
 # Getting Started
 
-![image.png](RISC%20Zero%207de7756176aa46d9bd1a0d33bb0ccde9/image.png)
+![image.png](/assets/post/risc0/image.png)
 
 위 그림은 RISC Zero를 사용하여 ZK 관련 로직을 사용하는 방법을 나타낸 그림입니다. 
 
@@ -43,7 +43,7 @@ tags: [zk]
     ```
     
 
-![image.png](RISC%20Zero%207de7756176aa46d9bd1a0d33bb0ccde9/image%201.png)
+![image.png](/assets/post/risc0/image%201.png)
 
 ### Manual Installation[​](https://dev.risczero.com/api/zkvm/install#manual-installation)
 
@@ -78,7 +78,7 @@ cargo risczero new hello-world --guest-name hello_guest
 cd hello-world
 ```
 
-![image.png](RISC%20Zero%207de7756176aa46d9bd1a0d33bb0ccde9/image%202.png)
+![image.png](/assets/post/risc0/image%202.png)
 
 프로젝트 폴더 내부에서`cargo run --release` 명령어를 실행하여 프로젝트를 빌드하고 실행할 수 있습니다.
 
@@ -148,7 +148,7 @@ let output:u32 = receipt.journal.decode().unwrap();
 
 ```
 
-![image.png](RISC%20Zero%207de7756176aa46d9bd1a0d33bb0ccde9/image%203.png)
+![image.png](/assets/post/risc0/image%203.png)
 
 ## Understanding I/O in the zkVM
 
@@ -226,19 +226,19 @@ proof composition 를 사용하기 위해 host에서 `add_assumption()` 함수�
 
 proof composition은 `ReceiptClaim`구조체에 *assumptions*을 추가하고, *assumptions을* resolveing 하는 것으로 동작합니다.
 
-![image.png](RISC%20Zero%207de7756176aa46d9bd1a0d33bb0ccde9/image%204.png)
+![image.png](/assets/post/risc0/image%204.png)
 
 **Adding Assumptions**
 
 `env::verify()` 가 guest 프로그램 내부에서 호출 되면 assumption이 `ReceiptClaim` 에 추가됩니다.
 
-![image.png](RISC%20Zero%207de7756176aa46d9bd1a0d33bb0ccde9/image%205.png)
+![image.png](/assets/post/risc0/image%205.png)
 
 **Resolve an Assumption**
 
 proof composition 를 해결하기 위해서 assumptions이 resolve 되어야 합니다.  이는 `resolve` 를 통해 수행됩니다. 이는 유저가 `Prover::prove_with_opts` 를 호출할 때 자동으로 호출 됩니다.
 
-![image.png](RISC%20Zero%207de7756176aa46d9bd1a0d33bb0ccde9/image%206.png)
+![image.png](/assets/post/risc0/image%206.png)
 
 # Generating Proofs for your zkVM Application
 
