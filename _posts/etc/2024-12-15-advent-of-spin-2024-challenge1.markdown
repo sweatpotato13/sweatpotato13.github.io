@@ -53,12 +53,12 @@ assets 경로에 있는 파일들을 호스팅 해주는 파일서버 입니다.
 - component는 key-value store인 `spin-key-value`와 `index.html` 을 호스팅해줄 `fileserver` 총 두가지 컴포넌트가 존재합니다.
 - `/index.html` 경로에 호스팅을 해 주어야 하기 때문에 `fileserver` 의 route 는 `/` 로 하였습니다.
 - 또한 `index.html` 만 사용하기 때문에 `/` 를 `/index.html` 로 변경하였습니다.
-- spin-key-value 의 경우 `/data` 만이 존재하기 때문에 route를 `/data` 로 하였습니다.
+- spin-key-value 의 경우 `/api/wishlists` 만이 존재하기 때문에 route를 `/api/wishlists` 로 하였습니다.
 - `key_value_stores = ["default"]` 를 `spin-key-value` 컴포넌트에 추가하였습니다.
 
 이를 실행해보면 다음과 같이 route가 생성됩니다.
 
-![route](https://i.imgur.com/QC70I7x.png)
+![route](https://i.imgur.com/ZL0h36o.png)
 
 이제 구현을 해야합니다.
 
