@@ -1,0 +1,616 @@
+---
+layout: post
+title: "LayerZero Omnichain Applications & Omnichain Fungible Tokens"
+date: "2025-02-04 10:56:44 +0900"
+tags: [blockchain]
+---
+
+# LayerZero
+
+# Overview
+
+이번 포스팅에서는 LayerZero를 사용하여 OApp(Omnichain Applications)과 OFT(Omnichain Fungible Tokens)를 배포하고 실행하는 과정을 설명합니다.
+
+# Getting Started with Contract Standards
+
+LayerZero의 **Contract Standards** 를 사용하여 임의의 데이터, 토큰 등을 해당 프로토콜을 사용하여 전송할 수 있습니다.
+
+- [Omnichain Application (OApp)](https://docs.layerzero.network/v2/developers/evm/oapp/overview): omnichain 메시징 및 구성을 위한 기본 contract 표준.
+- [Omnichain Fungible Token (OFT)](https://docs.layerzero.network/v2/developers/evm/oft/quickstart): ERC20 전송을 처리하고 지원하기 위해 구축된 OApp 확장.
+- [Omnichain Non-Fungible Token (ONFT)](https://docs.layerzero.network/v2/developers/evm/onft/quickstart): omnichain ERC721 전송을 처리하고 지원하기 위해 구축된 확장.
+
+이 표준들은 LayerZero Endpoint contract를 통해 omnichain 메시지를 보내고, 받고, 구성하기 위한 공통 기능을 구현하고 있습니다.
+
+- `OAppSender._lzSend`: `EndpointV2.send` 를 호출하여 byte 메시지를 보내는 Internal function
+- `OAppReceiver._lzReceive` :`EndpointV2.lzReceive` 를 호출한 뒤 encoded message를 byte로 전달하는 internal function
+
+# Quickstart - Create Your First Omnichain App
+
+## **Creating an OApp**
+
+아래 명령어를 사용하여 새 프로젝트를 생성합니다.
+
+```bash
+npx create-lz-oapp@latest
+```
+
+## **OApp Smart Contract**
+
+프로젝트를 생성하면 `MyOApp.sol` 컨트랙트가 있습니다.
+
+```solidity
+// contracts/MyOApp.sol
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.22;
+
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { OApp, MessagingFee, Origin } from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
+import { MessagingReceipt } from "@layerzerolabs/oapp-evm/contracts/oapp/OAppSender.sol";
+
+contract MyOApp is OApp {
+    constructor(address _endpoint, address _delegate) OApp(_endpoint, _delegate) Ownable(_delegate) {}
+
+    // This is where the message will be stored after it is received on the destination chain
+    string public data = "Nothing received yet.";
+
+    /**
+     * @notice Sends a message from the source chain to a destination chain.
+     * @param _dstEid The endpoint ID of the destination chain.
+     * @param _message The message string to be sent.
+     * @param _options Additional options for message execution.
+     * @dev Encodes the message as bytes and sends it using the `_lzSend` internal function.
+     * @return receipt A `MessagingReceipt` struct containing details of the message sent.
+     */
+    function send(
+        uint32 _dstEid,
+        // The message to be sent to the destination chain
+        string memory _message,
+        bytes calldata _options
+    ) external payable returns (MessagingReceipt memory receipt) {
+        bytes memory _payload = abi.encode(_message);
+        receipt = _lzSend(_dstEid, _payload, _options, MessagingFee(msg.value, 0), payable(msg.sender));
+    }
+
+    /**
+     * @notice Quotes the gas needed to pay for the full omnichain transaction in native gas or ZRO token.
+     * @param _dstEid Destination chain's endpoint ID.
+     * @param _message The message.
+     * @param _options Message execution options (e.g., for sending gas to destination).
+     * @param _payInLzToken Whether to return fee in ZRO token.
+     * @return fee A `MessagingFee` struct containing the calculated gas fee in either the native token or ZRO token.
+     */
+    function quote(
+        uint32 _dstEid,
+        string memory _message,
+        bytes memory _options,
+        bool _payInLzToken
+    ) public view returns (MessagingFee memory fee) {
+        bytes memory payload = abi.encode(_message);
+        fee = _quote(_dstEid, payload, _options, _payInLzToken);
+    }
+
+    /**
+     * @dev Internal function override to handle incoming messages from another chain.
+     * @dev _origin A struct containing information about the message sender.
+     * @dev _guid A unique global packet identifier for the message.
+     * @param payload The encoded message payload being received.
+     *
+     * @dev The following params are unused in the current implementation of the OApp.
+     * @dev _executor The address of the Executor responsible for processing the message.
+     * @dev _extraData Arbitrary data appended by the Executor to the message.
+     *
+     * Decodes the received payload and processes it as per the business logic defined in the function.
+     */
+    function _lzReceive(
+        Origin calldata /*_origin*/,
+        bytes32 /*_guid*/,
+        bytes calldata payload,
+        address /*_executor*/,
+        bytes calldata /*_extraData*/
+    ) internal override {
+        data = abi.decode(payload, (string));
+    }
+}
+```
+
+## **Configuration**
+
+`hardhat.config.ts` 에 배포할 네트워크에 대한 정보를 입력합니다.
+
+```tsx
+networks: {
+    'avalanche-testnet': {
+        eid: EndpointId.AVALANCHE_V2_TESTNET,
+        url: process.env.RPC_URL_FUJI || 'https://rpc.ankr.com/avalanche_fuji',
+        accounts,
+    },
+    'amoy-testnet': {
+        eid: EndpointId.AMOY_V2_TESTNET,
+        url: process.env.RPC_URL_AMOY || 'https://polygon-amoy-bor-rpc.publicnode.com',
+        accounts,
+    },
+}
+
+```
+
+ `.env.example` 를 복사해 `.env`  를 만들고 `.env`를 수정합니다. 
+
+```tsx
+PRIVATE_KEY = your_private_key; // Required
+RPC_URL_FUJI = your_fuji_rpc; // Optional but recommended
+RPC_URL_AMOY = your_amoy_rpc; // Optional but recommended
+```
+
+## **Deploying Contracts**
+
+아래 명렁어를 이용하여 배포합니다.
+
+```bash
+npx hardhat lz:deploy
+```
+
+![image.png](/assets/post/2025-02-04-layerzero/image.png)
+
+## Configuration and wiring
+
+이제 Chain간 Contract를 연결할 수 있는 준비가 되었습니다. 이를 위해 설정을 구성해야합니다. 해당 설정은 `layerzero.config.ts` 에 구성합니다.
+
+```tsx
+// layerzero.config.ts
+import {EndpointId} from '@layerzerolabs/lz-definitions';
+
+import type {OAppOmniGraphHardhat, OmniPointHardhat} from '@layerzerolabs/toolbox-hardhat';
+
+const fujiContract: OmniPointHardhat = {
+  eid: EndpointId.AVALANCHE_V2_TESTNET,
+  contractName: 'MyOApp',
+};
+
+const amoyContract: OmniPointHardhat = {
+  eid: EndpointId.AMOY_V2_TESTNET,
+  contractName: 'MyOApp',
+};
+
+const config: OAppOmniGraphHardhat = {
+  contracts: [
+    {
+      contract: fujiContract,
+    },
+    {
+      contract: amoyContract,
+    },
+  ],
+  connections: [
+    {
+      from: fujiContract,
+      to: amoyContract,
+    },
+    {
+      from: amoyContract,
+      to: fujiContract,
+    },
+  ],
+};
+
+export default config;
+```
+
+설정을 다 구성 했다면 아래 명령어를 이용하여 contract들을 연결할 수 있습니다.
+
+```bash
+npx hardhat lz:oapp:wire --oapp-config layerzero.config.ts
+```
+
+결과적으로 아래와 같이 출력 됩니다.
+
+![image](/assets/post/2025-02-04-layerzero/image%201.png)
+    
+## **Sending Your First Message**
+
+이제 실제 메시지를 보내기 위해 ts파일로 script를 구성합니다.
+
+`tasks/sendMessage.ts` 로 새 파일을 만들고 아래 코드를 입력합니다.
+
+```tsx
+// tasks/sendMessage.ts
+
+import {task} from 'hardhat/config';
+import {HardhatRuntimeEnvironment} from 'hardhat/types';
+
+import {Options} from '@layerzerolabs/lz-v2-utilities';
+
+export default task('sendMessage', 'Send a message to the destination chain')
+  .addParam('dstNetwork', 'The destination network name (from hardhat.config.ts)')
+  .addParam('message', 'The message to send')
+  .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
+    const {message, dstNetwork} = taskArgs;
+    const [signer] = await hre.ethers.getSigners();
+
+    // Get destination network's EID
+    const dstNetworkConfig = hre.config.networks[dstNetwork];
+    const dstEid = dstNetworkConfig.eid;
+
+    // Get current network's EID
+    const srcNetworkConfig = hre.config.networks[hre.network.name];
+    const srcEid = srcNetworkConfig?.eid;
+
+    console.log('Sending message:');
+    console.log('- From:', signer.address);
+    console.log('- Source network:', hre.network.name, srcEid ? `(EID: ${srcEid})` : '');
+    console.log('- Destination:', dstNetwork || 'unknown network', `(EID: ${dstEid})`);
+    console.log('- Message:', message);
+
+    const myOApp = await hre.deployments.get('MyOApp');
+    const contract = await hre.ethers.getContractAt('MyOApp', myOApp.address, signer);
+
+    // Add executor options with gas limit
+    const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toBytes();
+
+    // Get quote for the message
+    console.log('Getting quote...');
+    const quotedFee = await contract.quote(dstEid, message, options, false);
+    console.log('Quoted fee:', hre.ethers.utils.formatEther(quotedFee.nativeFee));
+
+    // Send the message
+    console.log('Sending message...');
+    const tx = await contract.send(dstEid, message, options, {value: quotedFee.nativeFee});
+
+    const receipt = await tx.wait();
+    console.log('🎉 Message sent! Transaction hash:', receipt.transactionHash);
+    console.log(
+      'Check message status on LayerZero Scan: https://testnet.layerzeroscan.com/tx/' +
+        receipt.transactionHash,
+    );
+  });
+```
+
+또한 `hardhat.config.ts` 에도 위에서 만든 파일을 Import 합니다.
+
+```tsx
+// hardhat.config.ts
+// (...)
+import {EndpointId} from '@layerzerolabs/lz-definitions';
+import './tasks/sendMessage'; // Import the task
+
+```
+
+이후 아래 명령어로 cross-chain message를 보낼 수 있습니다.
+
+```bash
+npx hardhat sendMessage --network avalanche-testnet --dst-network amoy-testnet --message "Hello Omnichain World (sent from Avalanche)"
+
+# 실제로는 amoy를 사용하지 않고 sepolia를 사용했음 (Gas fee 없어서)
+npx hardhat sendMessage --network sepolia-testnet --dst-network avalanche-testnet --message "Hello Omnichain World (sent from Seploia)"
+```
+
+결과는 아래와 같습니다.
+
+```tsx
+Sending message:
+- From: 0x498098ca1b7447fC5035f95B80be97eE16F82597
+- Source network: avalanche-testnet (EID: 40106)
+- Destination: amoy-testnet (EID: 40267)
+- Message: Hello Omnichain World (sent from Avalanche)
+Getting quote...
+Quoted fee: 0.004605311339306711
+Sending message...
+🎉 Message sent! Transaction hash: 0x47bd60f2710c2ec5a496c55c9763bd87fd4c599b541ad1287540fce9852ede65
+Check message status on LayerzeRo Scan: https://testnet.layerzeroscan.com/tx/0x47bd60f2710c2ec5a496c55c9763bd87fd4c599b541ad1287540fce9852ede65
+```
+
+- 실패 ( avax → sepolia )
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%202.png)
+    
+
+![image.png](/assets/post/2025-02-04-layerzero/image%203.png)
+
+![image.png](/assets/post/2025-02-04-layerzero/image%204.png)
+
+# LayerZero V2 OFT
+
+![oft](https://i.imgur.com/PSpgH48.png)
+
+OFT는 모든 체인에 배포되어야 하며, 각 체인에서 토큰을 발행하고 전송할 수 있습니다.
+
+각 체인간 전송하는 과정에서 기본적으로 Burn & Mint 처리가 됩니다.
+
+![oftadapter](https://i.imgur.com/bW3uDuk.png)
+
+만약 이미 존재하는 ERC20을 사용하여 OFTAdapter를 구성한 경우 Lock & Mint 처리가 됩니다.
+
+## Installation
+
+아래 명령어로 OFT가 포함된 프로젝트를 생성할 수 있습니다.
+
+```bash
+npx create-lz-oapp
+```
+
+![image.png](/assets/post/2025-02-04-layerzero/image%205.png)
+
+추가로 아래 명령어로 npm 패키지를 설치합니다.
+
+```bash
+pnpm add @layerzerolabs/oft-evm
+```
+
+OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT Contract를 배포해야 합니다.
+
+이미 해당 체인에 토큰이 존재하는 경우, 해당 토큰의 중개 역할을 하는 Lock Box로서 OFT Adapter Contract를 배포할 수 있습니다.
+
+기본적으로 OFT는 ERC20 규칙을 따르며, `decimals` 값을 `18`로 설정합니다. 다른 값을 사용하려면 컨트랙트에서 *decimals() 함수를 오버라이드해야 합니다*.
+
+## **Deployment Workflow**
+
+1. OFT를 연결하려는 모든 체인에 배포
+    
+    OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT 컨트랙트를 배포해야 합니다.
+    
+2. setPeer를 사용하여 체인 간 연결
+    
+    OFT는 OApp을 확장하므로, OFT.setPeer를 호출하여 각 대상 체인의 컨트랙트를 허용 목록(whitelist)에 추가해야 합니다.
+    
+3. DVN(Decentralized Verification Network) 설정
+    
+    블록 확인(block confirmations), 보안 임계값(security threshold), 실행자(Executor), 최대 메시지 크기(max message size), 송·수신 라이브러리(send/receive libraries) 등의 설정을 구성해야 합니다.
+    
+4. 보안 및 실행자(Executor) 설정 스크립트 참고
+    
+    보안 및 실행자 설정과 관련된 예제 스크립트는 “Security and Executor Configuration” 섹션에서 확인할 수 있습니다.
+    
+5. 가스 설정 (권장 옵션)
+    
+    OFT는 OAppOptionsType3을 상속받으므로, 사용자가 aOFT.send를 호출할 때 특정 가스 설정을 강제할 수 있습니다.
+    
+6. OFTAdapter를 사용하는 경우 (필수 설정)
+    
+    OFTAdapter를 사용할 경우, 전송할 토큰의 양만큼 ERC20.approve를 호출하여 OFTAdapter가 ERC20 토큰을 사용할 수 있도록 승인해야 합니다.
+    
+
+## Deploy
+
+1. `hardhat.config.ts` 구성
+    
+    본문에서는 amoy를 사용하지 않을거라 제거했음
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%206.png)
+    
+2. Mint function 추가
+    - 템플릿엔 mint가 별도로 없기 때문에 추가해 주어야 합니다.
+        - 프로덕션에서 사용하려면 `onlyOwner` 같은 modifier 를 반드시 넣어주세요
+        
+        ```solidity
+        // SPDX-License-Identifier: UNLICENSED
+        pragma solidity ^0.8.22;
+        
+        import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+        import { OFT } from "@layerzerolabs/oft-evm/contracts/OFT.sol";
+        
+        contract MyOFT is OFT {
+            constructor(
+                string memory _name,
+                string memory _symbol,
+                address _lzEndpoint,
+                address _delegate
+            ) OFT(_name, _symbol, _lzEndpoint, _delegate) Ownable(_delegate) {}
+        
+            // Mint function
+            function mint(address to, uint256 amount) external virtual {
+                _mint(to, amount);
+            }
+        }
+        
+        ```
+        
+3. 빌드
+    
+    ```bash
+    pnpm install # Install dependencies
+    pnpm compile # Compile contract
+    ```
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%207.png)
+    
+4. `.env` 구성
+    - Rename `.env.example` -> `.env`
+    - Choose your preferred means of setting up your deployer wallet/account:
+    
+    ```toml
+    MNEMONIC="test test test test test test test test test test test junk"
+    or...
+    PRIVATE_KEY="0xabc...def"
+    ```
+    
+5. 배포
+    
+    ```toml
+    npx hardhat lz:deploy
+    ```
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%208.png)
+    
+6. `layerzero.config.ts` 구성
+    
+    실제 컨트랙트를 연결할 체인들을 구성
+    
+    본문에서는 amoy를 사용하지 않아 제거했음
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%209.png)
+    
+7. Contract wire
+    
+    ```bash
+    npx hardhat lz:oapp:wire --oapp-config layerzero.config.ts
+    ```
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%2010.png)
+    
+8. Mint Task 생성 후 실행
+    - `tasks/mint.ts`
+        
+        ```tsx
+        // tasks/mint.ts
+        
+        import { task } from 'hardhat/config';
+        import { HardhatRuntimeEnvironment } from 'hardhat/types';
+        
+        import { Options } from '@layerzerolabs/lz-v2-utilities';
+        
+        export default task('mint', 'Mint a token to the destination chain')
+          .addParam('amount', 'The amount of tokens to mint')
+          .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
+            const { amount } = taskArgs;
+            const [signer] = await hre.ethers.getSigners();
+        
+            console.log('Minting tokens:');
+            console.log('- From:', signer.address);
+            console.log('- Amount:', amount);
+        
+            const myOFT = await hre.deployments.get('MyOFT');
+            const contract = await hre.ethers.getContractAt('MyOFT', myOFT.address, signer);
+        
+            // Send the message
+            console.log('Sending message...');
+            const tx = await contract.mint(signer.address, amount);
+        
+            const receipt = await tx.wait();
+            console.log('🎉 Tokens minted! Transaction hash:', receipt.transactionHash);
+          });
+        ```
+        
+    - `hardhat.config.ts` 에 추가
+        
+        ```tsx
+        import { EndpointId } from '@layerzerolabs/lz-definitions'
+        import "./tasks/mint" // 추가
+        
+        // Set your preferred authentication method
+        ```
+        
+    - 실행
+        
+        ```bash
+        npx hardhat mint --network sepolia-testnet --amount 10000000000000000000
+        ```
+        
+        ![image.png](/assets/post/2025-02-04-layerzero/image%2011.png)
+        
+        ![image.png](/assets/post/2025-02-04-layerzero/image%2012.png)
+        
+9. sendToken 생성 후 실행
+    
+    ```tsx
+    // tasks/sendToken.ts
+    
+    import { task } from 'hardhat/config';
+    import { HardhatRuntimeEnvironment } from 'hardhat/types';
+    
+    import { Options } from '@layerzerolabs/lz-v2-utilities';
+    
+    export default task('sendToken', 'Send a token to the destination chain')
+        .addParam('dstNetwork', 'The destination network name (from hardhat.config.ts)')
+        .addParam('amount', 'The amount of tokens to send')
+        .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
+            const { amount, dstNetwork } = taskArgs;
+            const [signer] = await hre.ethers.getSigners();
+    
+            const addressAsBytes32 = "0x0000000000000000000000002f32e86e8fc5e762aa32a09d4970cb3216fefaf4";
+    
+            // Get destination network's EID
+            const dstNetworkConfig = hre.config.networks[dstNetwork];
+            const dstEid = dstNetworkConfig.eid;
+    
+            // Get current network's EID
+            const srcNetworkConfig = hre.config.networks[hre.network.name];
+            const srcEid = srcNetworkConfig?.eid;
+    
+            console.log('Sending message:');
+            console.log('- From:', signer.address);
+            console.log('- Source network:', hre.network.name, srcEid ? `(EID: ${srcEid})` : '');
+            console.log('- Destination:', dstNetwork || 'unknown network', `(EID: ${dstEid})`);
+            console.log('- Amount:', amount);
+    
+            const myOFT = await hre.deployments.get('MyOFT');
+            const contract = await hre.ethers.getContractAt('MyOFT', myOFT.address, signer);
+    
+            // Add executor options with gas limit
+            const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toBytes();
+    
+            // Get quote for the message
+            console.log('Getting quote...');
+            const sendParam = {
+                dstEid: dstEid,
+                to: addressAsBytes32,
+                amountLD: amount,
+                minAmountLD: amount,
+                extraOptions: options,
+                composeMsg: "0x00",
+                oftCmd: "0x00"
+            }
+            const quotedFee = await contract.quoteSend(sendParam, false);
+            console.log('Quoted fee:', hre.ethers.utils.formatEther(quotedFee.nativeFee));
+    
+            // Send the message
+            console.log('Sending tokens...');
+            const tx = await contract.send(sendParam, quotedFee, signer.address, {value: quotedFee.nativeFee});
+    
+            const receipt = await tx.wait();
+            console.log('🎉 Tokens sent! Transaction hash:', receipt.transactionHash);
+            console.log(
+                'Check token balance on LayerZero Scan: https://testnet.layerzeroscan.com/tx/' +
+                receipt.transactionHash,
+            );
+        });
+    ```
+    
+    ```tsx
+    import { EndpointId } from '@layerzerolabs/lz-definitions'
+    import "./tasks/mint"
+    import "./tasks/sendToken" // 추가
+    ```
+    
+    ```bash
+    npx hardhat sendToken --network sepolia-testnet --dst-network avalanche-testnet --amount 1000000000000000000
+    ```
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%2013.png)
+    
+    - 아래와 같이 LayerZero Explorer에서도 확인할 수 있음
+        
+        ![image.png](/assets/post/2025-02-04-layerzero/image%2014.png)
+        
+    - 실제 Fuji chain에 전송된 것을 확인할 수 있음
+        
+        ![image.png](/assets/post/2025-02-04-layerzero/image%2015.png)
+        
+    - Source Chain에서는 send와 함께 Burn 처리됨
+        
+        ![image.png](/assets/post/2025-02-04-layerzero/image%2016.png)
+        
+
+# TroubleShooting
+
+- Message Blocked
+    
+    ![image.png](/assets/post/2025-02-04-layerzero/image%2017.png)
+    
+    - Config이 잘못되는 경우 Blocked가 되는 경우가 있음
+        - `create-lz-oapp` 을 사용해서 만드는 프로젝트의 기본설정을 사용했는데 그게 문제가 된 것 같음
+        - `layerzero.config.ts` 의 connections 부분을 수정
+            - 이상한 옵션을 싹 제거함
+            
+            ```
+                connections: [
+                    {
+                        from: fujiContract,
+                        to: sepoliaContract,
+                    },
+                    {
+                        from: sepoliaContract,
+                        to: fujiContract,
+                    }
+                ],
+            ```
