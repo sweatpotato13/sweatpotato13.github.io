@@ -1,0 +1,257 @@
+---
+layout: post
+title: "LayerZero Omnichain Not Fungible Tokens (ONFT)"
+date: "2025-02-06 10:56:44 +0900"
+tags: [blockchain]
+---
+
+# LayerZero
+
+# Overview
+
+[이전 포스팅](/2025/02/04/layerzero-1/)에서 LayerZero를 사용하여 OApp(Omnichain Applications)과 OFT(Omnichain Fungible Tokens)를 배포하고 실행하는 과정을 다뤄보았습니다.
+이번 포스팅에선 ONFT(Omnichain Non-Fungible Tokens)를 배포하고 실행하는 과정을 다뤄보겠습니다.
+
+# LayerZero V2 ONFT
+
+ONFT도 OFT와 같이 사용하려는 모든 체인에 ONFT 컨트랙트가 배포 되어 있어야 합니다.
+
+이후 OFT와 동일하게 토큰 전송시 bufn & mint 로직을 사용하고 있습니다.
+
+![image.png](/assets/post/2025-02-06-layerzero-2/image%2017.png)
+
+## Installation
+
+아래 명령어로 ONFT가 포함된 프로젝트를 생성할 수 있습니다.
+
+`ONFT721` 를 선택하면 해당 프로젝트에 OFT가 포함되어 있습니다.
+
+```bash
+npx create-lz-oapp
+```
+
+![image.png](/assets/post/2025-02-06-layerzero-2/image%2018.png)
+
+이후 아래 명령어를 사용하여 패키지를 추가 설치 해줍니다.
+
+```bash
+pnpm add @layerzerolabs/onft-evm
+```
+
+## Deploy
+
+1. `hardhat.config.ts` 구성
+    
+    본문에서는 amoy를 사용하지 않을거라 제거했음
+    
+    ![image.png](/assets/post/2025-02-06-layerzero-2/image%206.png)
+    
+2. Mint function 추가
+    - 템플릿엔 mint가 별도로 없기 때문에 추가해 주어야 합니다.
+        - 프로덕션에서 사용하려면 `onlyOwner` 같은 modifier 를 반드시 넣어주세요
+        
+        ```solidity
+        // SPDX-License-Identifier: UNLICENSED
+        pragma solidity ^0.8.22;
+        
+        import { ONFT721 } from "@layerzerolabs/onft-evm/contracts/onft721/ONFT721.sol";
+        
+        contract MyONFT721 is ONFT721 {
+            constructor(
+                string memory _name,
+                string memory _symbol,
+                address _lzEndpoint,
+                address _delegate
+            ) ONFT721(_name, _symbol, _lzEndpoint, _delegate) {}
+        
+            function mint(address to, uint256 tokenId) external virtual {
+                _mint(to, tokenId);
+            }
+        }
+        
+        ```
+        
+3. 빌드
+    
+    ```bash
+    pnpm install # Install dependencies
+    pnpm compile # Compile contract
+    ```
+    
+    ![image.png](/assets/post/2025-02-06-layerzero-2/image%2019.png)
+    
+4. `.env` 구성
+    - Rename `.env.example` -> `.env`
+    - Choose your preferred means of setting up your deployer wallet/account:
+    
+    ```toml
+    MNEMONIC="test test test test test test test test test test test junk"
+    or...
+    PRIVATE_KEY="0xabc...def"
+    ```
+    
+5. 배포
+    
+    ```toml
+    npx hardhat lz:deploy
+    ```
+    
+    ![image.png](/assets/post/2025-02-06-layerzero-2/image%2020.png)
+    
+6. `layerzero.config.ts` 구성
+    
+    실제 컨트랙트를 연결할 체인들을 구성
+    
+    본문에서는 amoy를 사용하지 않아 제거했음
+    
+    ![image.png](/assets/post/2025-02-06-layerzero-2/image%209.png)
+    
+7. Contract wire
+    
+    ```bash
+    npx hardhat lz:oapp:wire --oapp-config layerzero.config.ts
+    ```
+    
+    ![image.png](/assets/post/2025-02-06-layerzero-2/image%2021.png)
+    
+8. Mint Task 생성 후 실행
+    - `tasks/mint.ts`
+        
+        ```tsx
+        // tasks/mint.ts
+        
+        import { task } from 'hardhat/config';
+        import { HardhatRuntimeEnvironment } from 'hardhat/types';
+        
+        export default task('mint', 'Mint a token to the destination chain')
+          .addParam('id', 'The token id to mint')
+          .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
+            const { id } = taskArgs;
+            const [signer] = await hre.ethers.getSigners();
+        
+            console.log('Minting tokens:');
+            console.log('- From:', signer.address);
+            console.log('- Token ID:', id);
+        
+            const myONFT721 = await hre.deployments.get('MyONFT721');
+            const contract = await hre.ethers.getContractAt('MyONFT721', myONFT721.address, signer);
+        
+            // Send the message
+            console.log('Sending message...');
+            const tx = await contract.mint(signer.address, id);
+        
+            const receipt = await tx.wait();
+            console.log('🎉 Tokens minted! Transaction hash:', receipt.transactionHash);
+          });
+        ```
+        
+    - `hardhat.config.ts` 에 추가
+        
+        ```tsx
+        import { EndpointId } from '@layerzerolabs/lz-definitions'
+        import "./tasks/mint" // 추가
+        
+        // Set your preferred authentication method
+        ```
+        
+    - 실행
+        
+        ```bash
+        npx hardhat mint --network sepolia-testnet --id 1
+        ```
+        
+        ![image.png](/assets/post/2025-02-06-layerzero-2/image%2022.png)
+        
+        ![image.png](/assets/post/2025-02-06-layerzero-2/image%2023.png)
+        
+9. sendToken 생성 후 실행
+    
+    ```tsx
+    // tasks/sendToken.ts
+    
+    import { task } from 'hardhat/config';
+    import { HardhatRuntimeEnvironment } from 'hardhat/types';
+    
+    import { Options } from '@layerzerolabs/lz-v2-utilities';
+    
+    export default task('sendToken', 'Send a token to the destination chain')
+        .addParam('dstNetwork', 'The destination network name (from hardhat.config.ts)')
+        .addParam('id', 'The token id to send')
+        .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
+            const { id, dstNetwork } = taskArgs;
+            const [signer] = await hre.ethers.getSigners();
+    
+            const addressAsBytes32 = "0x0000000000000000000000002f32e86e8fc5e762aa32a09d4970cb3216fefaf4";
+    
+            // Get destination network's EID
+            const dstNetworkConfig = hre.config.networks[dstNetwork];
+            const dstEid = dstNetworkConfig.eid;
+    
+            // Get current network's EID
+            const srcNetworkConfig = hre.config.networks[hre.network.name];
+            const srcEid = srcNetworkConfig?.eid;
+    
+            console.log('Sending message:');
+            console.log('- From:', signer.address);
+            console.log('- Source network:', hre.network.name, srcEid ? `(EID: ${srcEid})` : '');
+            console.log('- Destination:', dstNetwork || 'unknown network', `(EID: ${dstEid})`);
+            console.log('- Token ID:', id);
+    
+            const myONFT721 = await hre.deployments.get('MyONFT721');
+            const contract = await hre.ethers.getContractAt('MyONFT721', myONFT721.address, signer);
+    
+            // Add executor options with gas limit
+            const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toBytes();
+    
+            // Get quote for the message
+            console.log('Getting quote...');
+            const sendParam = {
+                dstEid: dstEid,
+                to: addressAsBytes32,
+                tokenId: id,
+                extraOptions: options,
+                composeMsg: "0x00",
+                onftCmd: "0x00"
+            }    
+            const quotedFee = await contract.quoteSend(sendParam, false);
+            console.log('Quoted fee:', hre.ethers.utils.formatEther(quotedFee.nativeFee));
+    
+            // Send the message
+            console.log('Sending tokens...');
+            const tx = await contract.send(sendParam, quotedFee, signer.address, {value: quotedFee.nativeFee});
+    
+            const receipt = await tx.wait();
+            console.log('🎉 Tokens sent! Transaction hash:', receipt.transactionHash);
+            console.log(
+                'Check token balance on LayerZero Scan: https://testnet.layerzeroscan.com/tx/' +
+                receipt.transactionHash,
+            );
+        });
+    ```
+    
+    ```tsx
+    import { EndpointId } from '@layerzerolabs/lz-definitions'
+    import "./tasks/mint"
+    import "./tasks/sendToken" // 추가
+    ```
+    
+    ```bash
+    npx hardhat sendToken --network sepolia-testnet --dst-network avalanche-testnet --id 1
+    ```
+    
+    ![image.png](/assets/post/2025-02-06-layerzero-2/image%2024.png)
+    
+    - 아래와 같이 LayerZero Explorer에서도 확인할 수 있음
+        
+        ![image.png](/assets/post/2025-02-06-layerzero-2/image%2025.png)
+        
+    - Source Chain에서 처리 됨
+        
+        ![image.png](/assets/post/2025-02-06-layerzero-2/image%2026.png)
+        
+        - token을 zero address로 보낸 것으로 burn처리 하였음을 확인할 수 있음
+    - 실제 Fuji chain에 전송된 것을 확인할 수 있음
+        
+        ![image.png](/assets/post/2025-02-06-layerzero-2/image%2027.png)
+        
+        - 실제 mint 형식으로 전송 된 것을 확인할 수 있음

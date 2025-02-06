@@ -151,7 +151,7 @@ RPC_URL_AMOY = your_amoy_rpc; // Optional but recommended
 npx hardhat lz:deploy
 ```
 
-![image.png](/assets/post/2025-02-04-layerzero/image.png)
+![image.png](/assets/post/2025-02-04-layerzero-1/image.png)
 
 ## Configuration and wiring
 
@@ -205,7 +205,7 @@ npx hardhat lz:oapp:wire --oapp-config layerzero.config.ts
 
 결과적으로 아래와 같이 출력 됩니다.
 
-![image](/assets/post/2025-02-04-layerzero/image%201.png)
+![image](/assets/post/2025-02-04-layerzero-1/image%201.png)
     
 ## **Sending Your First Message**
 
@@ -302,12 +302,12 @@ Check message status on LayerzeRo Scan: https://testnet.layerzeroscan.com/tx/0x4
 
 - 실패 ( avax → sepolia )
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%202.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%202.png)
     
 
-![image.png](/assets/post/2025-02-04-layerzero/image%203.png)
+![image.png](/assets/post/2025-02-04-layerzero-1/image%203.png)
 
-![image.png](/assets/post/2025-02-04-layerzero/image%204.png)
+![image.png](/assets/post/2025-02-04-layerzero-1/image%204.png)
 
 # LayerZero V2 OFT
 
@@ -329,7 +329,7 @@ OFT는 모든 체인에 배포되어야 하며, 각 체인에서 토큰을 발�
 npx create-lz-oapp
 ```
 
-![image.png](/assets/post/2025-02-04-layerzero/image%205.png)
+![image.png](/assets/post/2025-02-04-layerzero-1/image%205.png)
 
 추가로 아래 명령어로 npm 패키지를 설치합니다.
 
@@ -376,7 +376,7 @@ OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT
     
     본문에서는 amoy를 사용하지 않을거라 제거했음
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%206.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%206.png)
     
 2. Mint function 추가
     - 템플릿엔 mint가 별도로 없기 때문에 추가해 주어야 합니다.
@@ -412,7 +412,7 @@ OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT
     pnpm compile # Compile contract
     ```
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%207.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%207.png)
     
 4. `.env` 구성
     - Rename `.env.example` -> `.env`
@@ -430,7 +430,7 @@ OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT
     npx hardhat lz:deploy
     ```
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%208.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%208.png)
     
 6. `layerzero.config.ts` 구성
     
@@ -438,7 +438,7 @@ OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT
     
     본문에서는 amoy를 사용하지 않아 제거했음
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%209.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%209.png)
     
 7. Contract wire
     
@@ -446,7 +446,7 @@ OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT
     npx hardhat lz:oapp:wire --oapp-config layerzero.config.ts
     ```
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%2010.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%2010.png)
     
 8. Mint Task 생성 후 실행
     - `tasks/mint.ts`
@@ -496,9 +496,9 @@ OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT
         npx hardhat mint --network sepolia-testnet --amount 10000000000000000000
         ```
         
-        ![image.png](/assets/post/2025-02-04-layerzero/image%2011.png)
+        ![image.png](/assets/post/2025-02-04-layerzero-1/image%2011.png)
         
-        ![image.png](/assets/post/2025-02-04-layerzero/image%2012.png)
+        ![image.png](/assets/post/2025-02-04-layerzero-1/image%2012.png)
         
 9. sendToken 생성 후 실행
     
@@ -576,26 +576,26 @@ OFT를 생성하려면, 토큰을 존재시키고자 하는 모든 체인에 OFT
     npx hardhat sendToken --network sepolia-testnet --dst-network avalanche-testnet --amount 1000000000000000000
     ```
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%2013.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%2013.png)
     
     - 아래와 같이 LayerZero Explorer에서도 확인할 수 있음
         
-        ![image.png](/assets/post/2025-02-04-layerzero/image%2014.png)
+        ![image.png](/assets/post/2025-02-04-layerzero-1/image%2014.png)
         
     - 실제 Fuji chain에 전송된 것을 확인할 수 있음
         
-        ![image.png](/assets/post/2025-02-04-layerzero/image%2015.png)
+        ![image.png](/assets/post/2025-02-04-layerzero-1/image%2015.png)
         
     - Source Chain에서는 send와 함께 Burn 처리됨
         
-        ![image.png](/assets/post/2025-02-04-layerzero/image%2016.png)
+        ![image.png](/assets/post/2025-02-04-layerzero-1/image%2016.png)
         
 
 # TroubleShooting
 
 - Message Blocked
     
-    ![image.png](/assets/post/2025-02-04-layerzero/image%2017.png)
+    ![image.png](/assets/post/2025-02-04-layerzero-1/image%2017.png)
     
     - Config이 잘못되는 경우 Blocked가 되는 경우가 있음
         - `create-lz-oapp` 을 사용해서 만드는 프로젝트의 기본설정을 사용했는데 그게 문제가 된 것 같음
