@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="800" height="500" fill="#f8f9fa" />
+  
+  <!-- Diamond 계약 -->
+  <rect x="300" y="50" width="200" height="100" rx="10" fill="#4e73df" />
+  <text x="400" y="90" font-family="Arial" font-size="20" text-anchor="middle" fill="white">Diamond Contract</text>
+  <text x="400" y="120" font-family="Arial" font-size="14" text-anchor="middle" fill="white">Proxy / Facade</text>
+  
+  <!-- Facet 계약들 -->
+  <rect x="100" y="250" width="150" height="80" rx="8" fill="#1cc88a" />
+  <text x="175" y="280" font-family="Arial" font-size="16" text-anchor="middle" fill="white">Facet A</text>
+  <text x="175" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="white">기능 A</text>
+  
+  <rect x="325" y="250" width="150" height="80" rx="8" fill="#1cc88a" />
+  <text x="400" y="280" font-family="Arial" font-size="16" text-anchor="middle" fill="white">Facet B</text>
+  <text x="400" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="white">기능 B</text>
+  
+  <rect x="550" y="250" width="150" height="80" rx="8" fill="#1cc88a" />
+  <text x="625" y="280" font-family="Arial" font-size="16" text-anchor="middle" fill="white">Facet C</text>
+  <text x="625" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="white">기능 C</text>
+  
+  <!-- Storage -->
+  <rect x="300" y="400" width="200" height="60" rx="8" fill="#f6c23e" />
+  <text x="400" y="435" font-family="Arial" font-size="16" text-anchor="middle" fill="black">Diamond Storage</text>
+  
+  <!-- 연결선 -->
+  <!-- Diamond에서 Facet으로 -->
+  <line x1="400" y1="150" x2="175" y2="250" stroke="#36b9cc" stroke-width="2" stroke-dasharray="5,5" />
+  <line x1="400" y1="150" x2="400" y2="250" stroke="#36b9cc" stroke-width="2" stroke-dasharray="5,5" />
+  <line x1="400" y1="150" x2="625" y2="250" stroke="#36b9cc" stroke-width="2" stroke-dasharray="5,5" />
+  
+  <!-- Facet에서 Storage로 -->
+  <line x1="175" y1="330" x2="300" y2="400" stroke="#36b9cc" stroke-width="2" />
+  <line x1="400" y1="330" x2="400" y2="400" stroke="#36b9cc" stroke-width="2" />
+  <line x1="625" y1="330" x2="500" y2="400" stroke="#36b9cc" stroke-width="2" />
+  
+  <!-- delegatecall 설명 -->
+  <text x="240" y="190" font-family="Arial" font-size="14" fill="#e74a3b" transform="rotate(-25 240 190)">delegatecall</text>
+  <text x="400" y="200" font-family="Arial" font-size="14" fill="#e74a3b">delegatecall</text>
+  <text x="560" y="190" font-family="Arial" font-size="14" fill="#e74a3b" transform="rotate(25 560 190)">delegatecall</text>
+  
+  <!-- 사용자 호출 -->
+  <text x="400" y="30" font-family="Arial" font-size="14" fill="#5a5c69" text-anchor="middle">사용자 호출 (Single Address)</text>
+  <line x1="400" y1="35" x2="400" y2="50" stroke="#5a5c69" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- 화살표 마커 정의 -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#5a5c69" />
+    </marker>
+  </defs>
+  
+  <!-- 제목 -->
+  <text x="400" y="480" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#5a5c69">ERC-2535 Diamond Pattern 구조</text>
+</svg> 
