@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="800" height="600" fill="#f8f9fa" />
+  
+  <!-- 제목 -->
+  <text x="400" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">Diamond 패턴 개발 및 업그레이드 워크플로우</text>
+  
+  <!-- 워크플로우 단계 -->
+  <!-- 1. 초기 개발 -->
+  <rect x="100" y="100" width="600" height="80" rx="10" fill="#4e73df" />
+  <text x="400" y="145" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="white">1. 초기 개발 (Diamond + 기본 Facet)</text>
+  <text x="400" y="170" font-family="Arial" font-size="14" text-anchor="middle" fill="white">Diamond.sol + DiamondCutFacet + DiamondLoupeFacet + 첫 번째 기능 Facet</text>
+  
+  <!-- 화살표 -->
+  <line x1="400" y1="180" x2="400" y2="210" stroke="#333" stroke-width="2" />
+  <polygon points="400,210 395,200 405,200" fill="#333" />
+  
+  <!-- 2. 배포 -->
+  <rect x="100" y="210" width="600" height="60" rx="10" fill="#1cc88a" />
+  <text x="400" y="245" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="white">2. 컨트랙트 배포 (pnpm deploy:local)</text>
+  
+  <!-- 화살표 -->
+  <line x1="400" y1="270" x2="400" y2="300" stroke="#333" stroke-width="2" />
+  <polygon points="400,300 395,290 405,290" fill="#333" />
+  
+  <!-- 3. 새 기능 개발 -->
+  <rect x="100" y="300" width="600" height="60" rx="10" fill="#36b9cc" />
+  <text x="400" y="335" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="white">3. 새로운 기능/버그 수정 개발 (V2 Facet)</text>
+  
+  <!-- 화살표 -->
+  <line x1="400" y1="360" x2="400" y2="390" stroke="#333" stroke-width="2" />
+  <polygon points="400,390 395,380 405,380" fill="#333" />
+  
+  <!-- 4. Diamond Cut -->
+  <rect x="100" y="390" width="600" height="60" rx="10" fill="#e74a3b" />
+  <text x="400" y="425" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="white">4. Diamond Cut을 통한 업그레이드 (pnpm upgrade:counter:v2)</text>
+  
+  <!-- 화살표 -->
+  <line x1="400" y1="450" x2="400" y2="480" stroke="#333" stroke-width="2" />
+  <polygon points="400,480 395,470 405,470" fill="#333" />
+  
+  <!-- 5. 검증 -->
+  <rect x="100" y="480" width="600" height="60" rx="10" fill="#f6c23e" />
+  <text x="400" y="515" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="white">5. 업그레이드 검증 및 테스트</text>
+  
+  <!-- 순환 화살표 (3~5단계 반복) -->
+  <path d="M700,425 C750,425 750,335 700,335" fill="none" stroke="#333" stroke-width="2" />
+  <polygon points="700,335 710,340 705,325" fill="#333" />
+  <text x="730" y="385" font-family="Arial" font-size="14" text-anchor="middle" fill="#333">반복</text>
+  
+  <!-- 설명 -->
+  <rect x="150" y="560" width="500" height="30" rx="5" fill="none" />
+  <text x="400" y="580" font-family="Arial" font-size="16" font-style="italic" text-anchor="middle" fill="#5a5c69">
+    * 동일한 Diamond 주소에서 기능 지속적 업그레이드 가능
+  </text>
+</svg> 
